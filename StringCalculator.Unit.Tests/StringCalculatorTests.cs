@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace StringCalculator.Unit.Tests
@@ -35,27 +36,33 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
-        [TestCase('|', 1, 1)]
-        [TestCase('\\', 345, 345)]
-        public void Custom_char_delimited_single_number_returns_that_number(char delimiter, int expectedSum, int number)
+        [TestCase('|', 1)]
+        [TestCase('"', 345)]
+        public void Custom_char_delimited_single_number_returns_that_number(char delimiter, int number)
         {
             var data = GetCharDelimitedData(delimiter, number);
 
             var sum = new StringCalculator(data).Sum();
 
-            Assert.That(sum, Is.EqualTo(expectedSum));
+            Assert.That(sum, Is.EqualTo(number));
         }
 
         [Test]
-        [TestCase('~', 3, 1, 2)]
-        [TestCase('*', 357, 12, 345)]
-        public void Custom_char_delimited_numbers_returns_the_sum(char delimiter, int expectedSum, params int[] numbers)
+        [TestCase('~', 1, 2)]
+        [TestCase('*', 12, 345, 6)]
+        public void Custom_char_delimited_numbers_returns_the_sum(char delimiter, params int[] numbers)
         {
             var data = GetCharDelimitedData(delimiter, numbers);
 
             var sum = new StringCalculator(data).Sum();
 
-            Assert.That(sum, Is.EqualTo(expectedSum));
+            Assert.That(sum, Is.EqualTo(numbers.Sum()));
+        }
+
+        [Test]
+        public void Test()
+        {
+            
         }
 
         private static string GetCharDelimitedData(char delimiter, params int[] numbers)
@@ -66,7 +73,9 @@ namespace StringCalculator.Unit.Tests
 
     public class StringCalculator
     {
-        private string _data;
+        private readonly string _data;
+        private const char DefaultDelimiter = ',';
+        private const char ConstDelimiter = '\n';
 
         public StringCalculator(string data)
         {
@@ -78,16 +87,25 @@ namespace StringCalculator.Unit.Tests
             if (_data.Equals(string.Empty))
                 return 0;
 
-            char delimiter = ',';
-
             if (_data.StartsWith("//"))
-            {
-                delimiter = _data[2];
-                _data = _data.Substring(4);
-            }
+                return SumCustomCharDelimited();
 
-            string[] splitNums = _data.Split(delimiter);
+            string[] splitNums = _data.Split(new[] { DefaultDelimiter, ConstDelimiter });
 
+            return SumNums(splitNums);
+        }
+
+        private int SumCustomCharDelimited()
+        {
+            var delimiters = new[] { _data[2], ConstDelimiter };
+
+            var splitNums = _data.Substring(_data.IndexOf(ConstDelimiter) + 1).Split(delimiters);
+
+            return SumNums(splitNums);
+        }
+
+        private static int SumNums(IEnumerable<string> splitNums)
+        {
             return splitNums.Sum(n => int.Parse(n));
         }
     }
