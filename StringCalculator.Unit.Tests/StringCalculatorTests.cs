@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -37,7 +38,7 @@ namespace StringCalculator.Unit.Tests
 
         [Test]
         [TestCase('|', 1)]
-        [TestCase('"', 345)]
+        [TestCase('"', 234)]
         public void Custom_char_delimited_single_number_returns_that_number(char delimiter, int number)
         {
             var data = GetCharDelimitedData(delimiter, number);
@@ -60,14 +61,37 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
-        public void Test()
+        [TestCase("&", 1)]
+        [TestCase("##", 234)]
+        public void Custom_string_delimited_number_returns_that_number(string delimiter, int number)
         {
-            
+            var data = GetStringDelimitedData(delimiter, number);
+
+            var sum = new StringCalculator(data).Sum();
+
+            Assert.That(sum, Is.EqualTo(number));
+        }
+
+        [Test]
+        [TestCase("?", 1, 2)]
+        [TestCase("!!!", 12, 345, 6)]
+        public void Custom_string_delimited_numbers_returns_the_sum(string delimiter, params int[] numbers)
+        {
+            var data = GetStringDelimitedData(delimiter, numbers);
+
+            var sum = new StringCalculator(data).Sum();
+
+            Assert.That(sum, Is.EqualTo(numbers.Sum()));
         }
 
         private static string GetCharDelimitedData(char delimiter, params int[] numbers)
         {
             return string.Format("//{0}\n{1}", delimiter, string.Join(delimiter.ToString(), numbers));
+        }
+
+        private static string GetStringDelimitedData(string delimiter, params int[] numbers)
+        {
+            return string.Format("//[{0}]\n{1}", delimiter, string.Join(delimiter, numbers));
         }
     }
 
@@ -88,23 +112,39 @@ namespace StringCalculator.Unit.Tests
                 return 0;
 
             if (_data.StartsWith("//"))
-                return SumCustomCharDelimited();
+                return SumCustomDelimited();
 
             string[] splitNums = _data.Split(new[] { DefaultDelimiter, ConstDelimiter });
 
-            return SumNums(splitNums);
+            return SumNumbers(splitNums);
         }
 
-        private int SumCustomCharDelimited()
+        private int SumCustomDelimited()
         {
-            var delimiters = new[] { _data[2], ConstDelimiter };
+            var delimiter = _data.StartsWith("//[") ? GetStringDelimiterFromData() : _data[2].ToString();
 
-            var splitNums = _data.Substring(_data.IndexOf(ConstDelimiter) + 1).Split(delimiters);
+            var numberList = GetNumberListFromData(delimiter);
 
-            return SumNums(splitNums);
+            return SumNumbers(numberList);
         }
 
-        private static int SumNums(IEnumerable<string> splitNums)
+        private IEnumerable<string> GetNumberListFromData(string delimiter)
+        {
+            var dataIndex = _data.IndexOf('\n') + 1;
+
+            var delimiters = new[] { delimiter, ConstDelimiter.ToString() };
+
+            return _data.Substring(dataIndex).Split(delimiters, StringSplitOptions.None);
+        }
+
+        private string GetStringDelimiterFromData()
+        {
+            var length = _data.IndexOf("]\n", System.StringComparison.Ordinal) - 3;
+
+            return _data.Substring(3, length);
+        }
+
+        private static int SumNumbers(IEnumerable<string> splitNums)
         {
             return splitNums.Sum(n => int.Parse(n));
         }
