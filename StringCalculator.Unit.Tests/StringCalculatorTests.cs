@@ -74,7 +74,9 @@ namespace StringCalculator.Unit.Tests
 
         [Test]
         [TestCase("?", 1, 2)]
-        [TestCase("!!!", 12, 345, 6)]
+        [TestCase("!!", 12, 345, 6)]
+        [TestCase("@#~", 12, 345, 6)]
+        [TestCase("[]", 12, 345, 6)]
         public void Custom_string_delimited_numbers_returns_the_sum(string delimiter, params int[] numbers)
         {
             var data = GetStringDelimitedData(delimiter, numbers);
@@ -98,6 +100,7 @@ namespace StringCalculator.Unit.Tests
     public class StringCalculator
     {
         private readonly string _data;
+        private CustomDelimiterDataParser parser;
         private const char DefaultDelimiter = ',';
         private const char ConstDelimiter = '\n';
 
@@ -112,23 +115,53 @@ namespace StringCalculator.Unit.Tests
                 return 0;
 
             if (_data.StartsWith("//"))
-                return SumCustomDelimited();
+                return new CustomDelimiterDataParser(_data).Numbers.Sum();
 
-            string[] splitNums = _data.Split(new[] { DefaultDelimiter, ConstDelimiter });
+            return new DefaultDataParser(_data).Numbers.Sum();
+        }
+    }
 
-            return SumNumbers(splitNums);
+    public class DefaultDataParser
+    {
+        private readonly string _data;
+        private const char DefaultDelimiter = ',';
+        private const char ConstDelimiter = '\n';
+        public IEnumerable<int> Numbers { get; private set; }
+
+        public DefaultDataParser(string data)
+        {
+            _data = data;
+            Parse();
         }
 
-        private int SumCustomDelimited()
+        private void Parse()
+        {
+            var delimiters = new[] {DefaultDelimiter, ConstDelimiter};
+
+            Numbers = _data.Split(delimiters).Select(int.Parse);
+        }
+    }
+
+    internal class CustomDelimiterDataParser
+    {
+        private readonly string _data;
+        private const char ConstDelimiter = '\n';
+        public IEnumerable<int> Numbers { get; private set; }
+
+        public CustomDelimiterDataParser(string data)
+        {
+            _data = data;
+            Parse();
+        }
+
+        private void Parse()
         {
             var delimiter = _data.StartsWith("//[") ? GetStringDelimiterFromData() : _data[2].ToString();
 
-            var numberList = GetNumberListFromData(delimiter);
-
-            return SumNumbers(numberList);
+            Numbers = IsolateNumberData(delimiter).Select(int.Parse);
         }
 
-        private IEnumerable<string> GetNumberListFromData(string delimiter)
+        private IEnumerable<string> IsolateNumberData(string delimiter)
         {
             var dataIndex = _data.IndexOf('\n') + 1;
 
@@ -139,14 +172,10 @@ namespace StringCalculator.Unit.Tests
 
         private string GetStringDelimiterFromData()
         {
-            var length = _data.IndexOf("]\n", System.StringComparison.Ordinal) - 3;
+            var length = _data.IndexOf("]\n", StringComparison.Ordinal) - 3;
 
             return _data.Substring(3, length);
         }
 
-        private static int SumNumbers(IEnumerable<string> splitNums)
-        {
-            return splitNums.Sum(n => int.Parse(n));
-        }
     }
 }
