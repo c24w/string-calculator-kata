@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomDelimiterDataParser.cs" />
+    <Compile Include="DefaultDataParser.cs" />
+    <Compile Include="IDataParser.cs" />
     <Compile Include="StringCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

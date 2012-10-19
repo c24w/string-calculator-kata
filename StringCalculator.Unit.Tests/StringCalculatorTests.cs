@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 
 namespace StringCalculator.Unit.Tests
@@ -100,9 +98,6 @@ namespace StringCalculator.Unit.Tests
     public class StringCalculator
     {
         private readonly string _data;
-        private CustomDelimiterDataParser parser;
-        private const char DefaultDelimiter = ',';
-        private const char ConstDelimiter = '\n';
 
         public StringCalculator(string data)
         {
@@ -119,63 +114,5 @@ namespace StringCalculator.Unit.Tests
 
             return new DefaultDataParser(_data).Numbers.Sum();
         }
-    }
-
-    public class DefaultDataParser
-    {
-        private readonly string _data;
-        private const char DefaultDelimiter = ',';
-        private const char ConstDelimiter = '\n';
-        public IEnumerable<int> Numbers { get; private set; }
-
-        public DefaultDataParser(string data)
-        {
-            _data = data;
-            Parse();
-        }
-
-        private void Parse()
-        {
-            var delimiters = new[] {DefaultDelimiter, ConstDelimiter};
-
-            Numbers = _data.Split(delimiters).Select(int.Parse);
-        }
-    }
-
-    internal class CustomDelimiterDataParser
-    {
-        private readonly string _data;
-        private const char ConstDelimiter = '\n';
-        public IEnumerable<int> Numbers { get; private set; }
-
-        public CustomDelimiterDataParser(string data)
-        {
-            _data = data;
-            Parse();
-        }
-
-        private void Parse()
-        {
-            var delimiter = _data.StartsWith("//[") ? GetStringDelimiterFromData() : _data[2].ToString();
-
-            Numbers = IsolateNumberData(delimiter).Select(int.Parse);
-        }
-
-        private IEnumerable<string> IsolateNumberData(string delimiter)
-        {
-            var dataIndex = _data.IndexOf('\n') + 1;
-
-            var delimiters = new[] { delimiter, ConstDelimiter.ToString() };
-
-            return _data.Substring(dataIndex).Split(delimiters, StringSplitOptions.None);
-        }
-
-        private string GetStringDelimiterFromData()
-        {
-            var length = _data.IndexOf("]\n", StringComparison.Ordinal) - 3;
-
-            return _data.Substring(3, length);
-        }
-
     }
 }
