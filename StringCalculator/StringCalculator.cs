@@ -33,7 +33,7 @@ namespace StringCalculator
                 }
             }
 
-            throw new Exception("Data could not be parsed");
+            throw new Exception("Data could not be parsed: " + _data);
         }
     }
 }

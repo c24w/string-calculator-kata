@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 
 namespace StringCalculator.Unit.Tests
@@ -82,6 +83,26 @@ namespace StringCalculator.Unit.Tests
             var sum = new StringCalculator(data).Sum();
 
             Assert.That(sum, Is.EqualTo(numbers.Sum()));
+        }
+
+        [Test]
+        [TestCase("a")]
+        [TestCase("a,b,c")]
+        [TestCase(",")]
+        [TestCase(",1,")]
+        [TestCase(",1,23")]
+        [TestCase("1,")]
+        [TestCase("1,-23,")]
+        [TestCase("//^\n1^2~3")]
+        [TestCase("//#1#2#3")]
+        [TestCase("//[~~]1~~2~~3")]
+        public void Exception_is_thrown_when_no_suitable_parser_is_found(string data)
+        {
+            var exception = Assert.Throws(typeof (Exception), () => new StringCalculator(data).Sum());
+
+            var expectedMessage = "Data could not be parsed: " + data;
+
+            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
     }
 }
