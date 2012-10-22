@@ -8,23 +8,24 @@ namespace StringCalculator
     public class CustomDelimiterDataParser : IDataParser
     {
         private readonly string _data;
-        private readonly DefaultDataValidator _dataValidator;
-        private const char CompulsoryDelimiter = '\n';
+        private readonly IDataValidator _dataValidator;
+        private readonly INumberListParser _numListParser;
         public IEnumerable<int> Numbers { get; protected set; }
 
-        public CustomDelimiterDataParser(string data, DefaultDataValidator dataValidator)
+        public CustomDelimiterDataParser(string data, IDataValidator dataValidator, INumberListParser numListParser)
         {
             _data = data;
             _dataValidator = dataValidator;
+            _numListParser = numListParser;
         }
 
-        public CustomDelimiterDataParser(string data) : this(data, new DefaultDataValidator()) { }
+        public CustomDelimiterDataParser(string data) : this(data, new DefaultDataValidator(), new DefaultNumberListParser()) { }
 
         public void Parse()
         {
-            var delimiter = ExtractDelimiter();
+            var numList = _data.Substring(_data.IndexOf('\n') + 1);
 
-            Numbers = ExtractNumberData(delimiter).Select(int.Parse).Where(i => i < 1000);
+            Numbers = _numListParser.ParseNumberList(numList, ExtractDelimiter());
 
             _dataValidator.Validate(Numbers);
         }
@@ -33,7 +34,7 @@ namespace StringCalculator
         {
             if (IsStringDelimited())
             {
-                var delimLength = _data.IndexOf("]\n") - 3;
+                var delimLength = _data.IndexOf("]\n", StringComparison.Ordinal) - 3;
 
                 return _data.Substring(3, delimLength);
             }
@@ -46,18 +47,9 @@ namespace StringCalculator
             return _data.StartsWith("//[");
         }
 
-        private IEnumerable<string> ExtractNumberData(string delimiter)
-        {
-            var numberDataIndex = _data.IndexOf('\n') + 1;
-
-            var delimiters = new[] { delimiter, CompulsoryDelimiter.ToString() };
-
-            return _data.Substring(numberDataIndex).Split(delimiters, StringSplitOptions.None);
-        }
-
         public bool CanParse()
         {
             return Regex.IsMatch(_data, @"^//(\[(?<delim>.+)\]|(?<delim>.+))\n-?\d+((\k<delim>|\n)-?\d+)*$");
         }
     }
-}
+};

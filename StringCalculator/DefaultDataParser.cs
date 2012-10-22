@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,24 +8,23 @@ namespace StringCalculator
     public class DefaultDataParser : IDataParser
     {
         private readonly string _data;
-        private readonly DefaultDataValidator _dataValidator;
+        private readonly IDataValidator _dataValidator;
+        private readonly INumberListParser _defaultNumberListParser;
         private const char DefaultDelimiter = ',';
-        private const char CompulsoryDelimiter = '\n';
         public IEnumerable<int> Numbers { get; protected set; }
 
-        public DefaultDataParser(string data, DefaultDataValidator dataValidator)
+        public DefaultDataParser(string data, IDataValidator dataValidator, INumberListParser numListParser)
         {
+            _defaultNumberListParser = numListParser;
             _data = data;
             _dataValidator = dataValidator;
         }
 
-        public DefaultDataParser(string data) : this(data, new DefaultDataValidator()) { }
+        public DefaultDataParser(string data) : this(data, new DefaultDataValidator(), new DefaultNumberListParser()) { }
 
         public virtual void Parse()
         {
-            var delimiters = new[] { DefaultDelimiter, CompulsoryDelimiter };
-
-            Numbers = _data.Split(delimiters).Select(int.Parse).Where(i => i < 1000);
+            Numbers = _defaultNumberListParser.ParseNumberList(_data, DefaultDelimiter);
 
             _dataValidator.Validate(Numbers);
         }

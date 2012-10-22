@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace StringCalculator
 {
-    public class DefaultDataValidator
+    public class DefaultDataValidator : IDataValidator
     {
         public void Validate(IEnumerable<int> numbers)
         {
