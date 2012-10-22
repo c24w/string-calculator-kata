@@ -104,5 +104,18 @@ namespace StringCalculator.Unit.Tests
 
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
+
+        [Test]
+        [TestCase(1, 1, 1000)]
+        [TestCase(24, 1, 23, 4567)]
+        [TestCase(1002, 1, 2, 999)]
+        public void Comma_delimited_numbers_greater_than_999_are_ignored(int expected, params int[] numbers)
+        {
+            var data = string.Join(",", numbers);
+            
+            var sum = new StringCalculator(data).Sum();
+
+            Assert.That(sum, Is.EqualTo(expected));
+        }
     }
 }

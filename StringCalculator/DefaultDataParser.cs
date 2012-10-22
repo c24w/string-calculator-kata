@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,7 +24,7 @@ namespace StringCalculator
         {
             var delimiters = new[] { DefaultDelimiter, CompulsoryDelimiter };
 
-            Numbers = _data.Split(delimiters).Select(int.Parse);
+            Numbers = _data.Split(delimiters).Select(int.Parse).Where(i => i < 1000);
 
             _dataValidator.Validate(Numbers);
         }
