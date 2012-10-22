@@ -5,11 +5,18 @@ using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
-    public class CustomDelimiterDataParser : DefaultDataParser
+    public class CustomDelimiterDataParser : IDataParser
     {
-        public CustomDelimiterDataParser(string data) : base(data) { }
+        private readonly string _data;
+        private const char CompulsoryDelimiter = '\n';
+        public IEnumerable<int> Numbers { get; protected set; }
 
-        public override void Parse()
+        public CustomDelimiterDataParser(string data)
+        {
+            _data = data;
+        }
+
+        public void Parse()
         {
             var delimiter = ExtractDelimiter();
 
@@ -20,31 +27,31 @@ namespace StringCalculator
         {
             if (IsStringDelimited())
             {
-                var delimLength = Data.IndexOf("]\n") - 3;
+                var delimLength = _data.IndexOf("]\n") - 3;
 
-                return Data.Substring(3, delimLength);
+                return _data.Substring(3, delimLength);
             }
 
-            return Data[2].ToString();
+            return _data[2].ToString();
         }
 
         private bool IsStringDelimited()
         {
-            return Data.StartsWith("//[");
+            return _data.StartsWith("//[");
         }
 
         private IEnumerable<string> ExtractNumberData(string delimiter)
         {
-            var numberDataIndex = Data.IndexOf('\n') + 1;
+            var numberDataIndex = _data.IndexOf('\n') + 1;
 
             var delimiters = new[] { delimiter, CompulsoryDelimiter.ToString() };
 
-            return Data.Substring(numberDataIndex).Split(delimiters, StringSplitOptions.None);
+            return _data.Substring(numberDataIndex).Split(delimiters, StringSplitOptions.None);
         }
 
-        public override bool CanParse()
+        public bool CanParse()
         {
-            return Regex.IsMatch(Data, @"^//\[(?<delim>.+)\]|(?<delim>.+)\n\d+(\k<delim>\d+)*$");
+            return Regex.IsMatch(_data, @"^//\[(?<delim>.+)\]|(?<delim>.+)\n\d+(\k<delim>\d+)*$");
         }
     }
 }
