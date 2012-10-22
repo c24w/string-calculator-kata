@@ -21,6 +21,13 @@ namespace StringCalculator
             var delimiter = ExtractDelimiter();
 
             Numbers = ExtractNumberData(delimiter).Select(int.Parse);
+
+            var negatives = Numbers.Where(i => i < 0).ToArray();
+
+            if (negatives.Any())
+            {
+                throw new Exception("Data cannot contain negative numbers: " + string.Join(",", negatives));
+            }
         }
 
         private string ExtractDelimiter()
@@ -51,7 +58,7 @@ namespace StringCalculator
 
         public bool CanParse()
         {
-            return Regex.IsMatch(_data, @"^//\[(?<delim>.+)\]|(?<delim>.+)\n\d+(\k<delim>\d+)*$");
+            return Regex.IsMatch(_data, @"^//\[(?<delim>.+)\]|(?<delim>.+)\n-?\d+(\k<delim>-?\d+)*$");
         }
     }
 }
