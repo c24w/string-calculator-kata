@@ -41,7 +41,8 @@
   <ItemGroup>
     <Compile Include="DefaultDataValidator.cs" />
     <Compile Include="IDataValidator.cs" />
-    <Compile Include="Parsing\CustomDelimiterDataParser.cs" />
+    <Compile Include="Parsing\CustomCharDelimiterDataParser.cs" />
+    <Compile Include="Parsing\CustomStringDelimiterDataParser.cs" />
     <Compile Include="Parsing\DefaultDataParser.cs" />
     <Compile Include="Parsing\DefaultNumberListParser.cs" />
     <Compile Include="Parsing\IDataParser.cs" />

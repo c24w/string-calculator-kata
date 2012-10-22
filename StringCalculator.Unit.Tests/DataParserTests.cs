@@ -40,12 +40,17 @@ namespace StringCalculator.Unit.Tests
         [TestCase("//#\n1")]
         [TestCase("//*\n12*345*6")]
         [TestCase("//*\n12*345\n6")]
+        public void Custom_char_delimiter_data_parser_can_parse_method_returns_true_for_accepted_strings(string data)
+        {
+            Assert.That(new CustomCharDelimiterDataParser(data).CanParse(), Is.EqualTo(true));
+        }
+
         [TestCase("//[%£]\n12%£3%£456")]
         [TestCase("//[~~~]\n1~~~2")]
         [TestCase("//[~~~]\n1~~~2\n3")]
-        public void Custom_delimiter_data_parser_can_parse_method_returns_true_for_accepted_strings(string data)
+        public void Custom_string_delimiter_data_parser_can_parse_method_returns_true_for_accepted_strings(string data)
         {
-            Assert.That(new CustomDelimiterDataParser(data).CanParse(), Is.EqualTo(true));
+            Assert.That(new CustomStringDelimiterDataParser(data).CanParse(), Is.EqualTo(true));
         }
 
         [Test]
@@ -113,6 +118,18 @@ namespace StringCalculator.Unit.Tests
             var exception = Assert.Throws(typeof(Exception), () => new StringCalculator(data).Sum());
 
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+        }
+
+        [Test]
+        [TestCase(1)]
+        [TestCase(1, 2)]
+        [TestCase(111, 22, 3)]
+        [Ignore]
+        public void Custom_string_delimited_data_cntaining_negative_numbers_throws_an_exception(params int[] numbers)
+        {
+            var data = "//[a][bc]\n" + string.Join(",", numbers);
+
+            Assert.That(new CustomStringDelimiterDataParser(data).CanParse(), Is.EqualTo(false));
         }
     }
 }

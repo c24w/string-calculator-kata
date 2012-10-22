@@ -86,6 +86,17 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
+        [TestCase(1)]
+        [TestCase(234)]
+        [Ignore]
+        public void Multiple_custom_char_or_string_delimited_single_number_returns_that_number(int number)
+        {
+            var sum = new StringCalculator("//[a][bc]\n" + number).Sum();
+
+            Assert.That(sum, Is.EqualTo(number));
+        }
+
+        [Test]
         [TestCase("a")]
         [TestCase("a,b,c")]
         [TestCase(",")]

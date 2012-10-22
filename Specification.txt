@@ -1,0 +1,20 @@
+
+Should sum all delimited numbers
+--------------------------------
+
+Accepted syntax:
+
+	CSV								1,23,4
+	
+	Custom char delimiter			//;\n1;23;4
+	
+	Custom string delimiter			//[***]\n1***23***4
+
+	Multiple custom delimiters		//[#][&&]\n1#23&&4
+
+
+Critera:
+
+	Numbers > 999 are ignored
+	
+	Negative numbers throw an exception, displaying a list of guilty numbers

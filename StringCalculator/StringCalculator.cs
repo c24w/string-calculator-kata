@@ -30,7 +30,8 @@ namespace StringCalculator
         {
             IEnumerable<IDataParser> parsers = new List<IDataParser>
             {
-                new CustomDelimiterDataParser(_data),
+                new CustomStringDelimiterDataParser(_data),
+                new CustomCharDelimiterDataParser(_data),
                 new DefaultDataParser(_data)
             };
 
