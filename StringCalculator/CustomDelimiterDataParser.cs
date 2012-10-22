@@ -24,7 +24,7 @@ namespace StringCalculator
         {
             var delimiter = ExtractDelimiter();
 
-            Numbers = ExtractNumberData(delimiter).Select(int.Parse);
+            Numbers = ExtractNumberData(delimiter).Select(int.Parse).Where(i => i < 1000);
 
             _dataValidator.Validate(Numbers);
         }

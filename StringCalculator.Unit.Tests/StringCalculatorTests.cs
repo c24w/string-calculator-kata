@@ -117,5 +117,31 @@ namespace StringCalculator.Unit.Tests
 
             Assert.That(sum, Is.EqualTo(expected));
         }
+
+        [Test]
+        [TestCase(1, 1, 1000)]
+        [TestCase(24, 1, 23, 4567)]
+        [TestCase(1002, 1, 2, 999)]
+        public void Custom_char_delimited_numbers_greater_than_999_are_ignored(int expected, params int[] numbers)
+        {
+            var data = DataBuilder.GetCharDelimitedData('d', numbers);
+
+            var sum = new StringCalculator(data).Sum();
+
+            Assert.That(sum, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase(1, 1, 1000)]
+        [TestCase(24, 1, 23, 4567)]
+        [TestCase(1002, 1, 2, 999)]
+        public void Custom_string_delimited_numbers_greater_than_999_are_ignored(int expected, params int[] numbers)
+        {
+            var data = DataBuilder.GetStringDelimitedData("/*-", numbers);
+
+            var sum = new StringCalculator(data).Sum();
+
+            Assert.That(sum, Is.EqualTo(expected));
+        }
     }
 }
