@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 
 namespace StringCalculator.Unit.Tests
@@ -6,6 +7,7 @@ namespace StringCalculator.Unit.Tests
     [TestFixture]
     public class StringCalculatorTests
     {
+
         [Test]
         public void Empty_string_returns_zero()
         {
@@ -64,7 +66,7 @@ namespace StringCalculator.Unit.Tests
         public void Custom_string_delimited_number_returns_that_number(string delimiter, int number)
         {
             var data = GetStringDelimitedData(delimiter, number);
-
+            
             var sum = new StringCalculator(data).Sum();
 
             Assert.That(sum, Is.EqualTo(number));
@@ -92,27 +94,6 @@ namespace StringCalculator.Unit.Tests
         private static string GetStringDelimitedData(string delimiter, params int[] numbers)
         {
             return string.Format("//[{0}]\n{1}", delimiter, string.Join(delimiter, numbers));
-        }
-    }
-
-    public class StringCalculator
-    {
-        private readonly string _data;
-
-        public StringCalculator(string data)
-        {
-            _data = data;
-        }
-
-        public int Sum()
-        {
-            if (_data.Equals(string.Empty))
-                return 0;
-
-            if (_data.StartsWith("//"))
-                return new CustomDelimiterDataParser(_data).Numbers.Sum();
-
-            return new DefaultDataParser(_data).Numbers.Sum();
         }
     }
 }

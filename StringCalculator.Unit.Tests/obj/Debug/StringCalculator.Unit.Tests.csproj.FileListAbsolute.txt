@@ -5,3 +5,5 @@ C:\work\StringCalculator2\StringCalculator.Unit.Tests\bin\Debug\nunit.framework.
 C:\work\StringCalculator2\StringCalculator.Unit.Tests\obj\Debug\StringCalculator.Unit.Tests.csprojResolveAssemblyReference.cache
 C:\work\StringCalculator2\StringCalculator.Unit.Tests\obj\Debug\StringCalculator.Unit.Tests.dll
 C:\work\StringCalculator2\StringCalculator.Unit.Tests\obj\Debug\StringCalculator.Unit.Tests.pdb
+C:\work\StringCalculator2\StringCalculator.Unit.Tests\bin\Debug\StringCalculator.dll
+C:\work\StringCalculator2\StringCalculator.Unit.Tests\bin\Debug\StringCalculator.pdb
