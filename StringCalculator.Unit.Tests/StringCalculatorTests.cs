@@ -94,7 +94,7 @@ namespace StringCalculator.Unit.Tests
         [TestCase("1,")]
         [TestCase("1,-23,")]
         [TestCase("//^\n1^2~3")]
-        [TestCase("//#1#2#3")]
+        [TestCase("//#1\n2#3")]
         [TestCase("//[~~]1~~2~~3")]
         public void Exception_is_thrown_when_no_suitable_parser_is_found(string data)
         {

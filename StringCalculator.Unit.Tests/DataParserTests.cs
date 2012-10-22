@@ -11,7 +11,9 @@ namespace StringCalculator.Unit.Tests
         [TestCase("")]
         [TestCase("1")]
         [TestCase("1,2,3")]
+        [TestCase("1,2\n3")]
         [TestCase("12,345,6")]
+        [TestCase("12\n345,6")]
         public void Default_data_parser_can_parse_method_returns_true_for_accepted_strings(string data)
         {
             Assert.That(new DefaultDataParser(data).CanParse(), Is.EqualTo(true));
@@ -25,6 +27,7 @@ namespace StringCalculator.Unit.Tests
         [TestCase(",1,23")]
         [TestCase("1,")]
         [TestCase("1,23,")]
+        [TestCase("1\n23,")]
         [TestCase("//#\n1#2#3")]
         [TestCase("//[~~]\n1~~2~~3")]
         public void Default_data_parser_can_parse_method_returns_false_for_unaccepted_strings(string data)
@@ -35,8 +38,10 @@ namespace StringCalculator.Unit.Tests
         [Test]
         [TestCase("//#\n1")]
         [TestCase("//*\n12*345*6")]
+        [TestCase("//*\n12*345\n6")]
         [TestCase("//[%£]\n12%£3%£456")]
         [TestCase("//[~~~]\n1~~~2")]
+        [TestCase("//[~~~]\n1~~~2\n3")]
         public void Custom_delimiter_data_parser_can_parse_method_returns_true_for_accepted_strings(string data)
         {
             Assert.That(new CustomDelimiterDataParser(data).CanParse(), Is.EqualTo(true));
@@ -52,7 +57,7 @@ namespace StringCalculator.Unit.Tests
         [TestCase("1,23,")]
         [TestCase("//^\n1^2~3")]
         [TestCase("//#1#2#3")]
-        [TestCase("//[~~]1~~2~~3")]
+        [TestCase("//[~~]1~~2\n3")]
         public void Custom_delimiter_data_parser_can_parse_method_returns_false_for_unaccepted_strings(string data)
         {
             Assert.That(new DefaultDataParser(data).CanParse(), Is.EqualTo(false));

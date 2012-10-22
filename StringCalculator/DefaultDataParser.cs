@@ -33,7 +33,7 @@ namespace StringCalculator
 
         public virtual bool CanParse()
         {
-            return Regex.IsMatch(_data, "^(-?\\d+(,-?\\d+)*)?$");
+            return Regex.IsMatch(_data, "^(-?\\d+([,\n]-?\\d+)*)?$");
         }
     }
 }
