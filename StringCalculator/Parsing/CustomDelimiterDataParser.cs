@@ -48,7 +48,7 @@ namespace StringCalculator.Parsing
 
         public bool CanParse()
         {
-            return Regex.IsMatch(_data, @"^//(\[(?<delim>.+)\]|(?<delim>.+))\n-?\d+((\k<delim>|\n)-?\d+)*$");
+            return Regex.IsMatch(_data, @"^//(\[(?<delim>.+)\]|(?<delim>.+))\n-?\d+((\k<delim>|\n)-?\d+)*$", RegexOptions.Compiled);
         }
     }
 };

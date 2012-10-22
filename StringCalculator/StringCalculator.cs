@@ -40,7 +40,7 @@ namespace StringCalculator
                     return parser;
             }
 
-            throw new Exception("Data could not be parsed: " + _data);
+            throw new Exception("Data cannot be parsed: " + _data);
        }
 
     }

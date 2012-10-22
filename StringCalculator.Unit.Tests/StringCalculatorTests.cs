@@ -100,7 +100,7 @@ namespace StringCalculator.Unit.Tests
         {
             var exception = Assert.Throws(typeof (Exception), () => new StringCalculator(data).Sum());
 
-            var expectedMessage = "Data could not be parsed: " + data;
+            var expectedMessage = "Data cannot be parsed: " + data;
 
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
