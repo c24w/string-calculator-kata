@@ -8,13 +8,17 @@ namespace StringCalculator
     public class CustomDelimiterDataParser : IDataParser
     {
         private readonly string _data;
+        private readonly DefaultDataValidator _dataValidator;
         private const char CompulsoryDelimiter = '\n';
         public IEnumerable<int> Numbers { get; protected set; }
 
-        public CustomDelimiterDataParser(string data)
+        public CustomDelimiterDataParser(string data, DefaultDataValidator dataValidator)
         {
             _data = data;
+            _dataValidator = dataValidator;
         }
+
+        public CustomDelimiterDataParser(string data) : this(data, new DefaultDataValidator()) { }
 
         public void Parse()
         {
@@ -22,12 +26,7 @@ namespace StringCalculator
 
             Numbers = ExtractNumberData(delimiter).Select(int.Parse);
 
-            var negatives = Numbers.Where(i => i < 0).ToArray();
-
-            if (negatives.Any())
-            {
-                throw new Exception("Data cannot contain negative numbers: " + string.Join(",", negatives));
-            }
+            _dataValidator.Validate(Numbers);
         }
 
         private string ExtractDelimiter()

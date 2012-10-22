@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomDelimiterDataParser.cs" />
+    <Compile Include="DefaultDataValidator.cs" />
     <Compile Include="DefaultDataParser.cs" />
     <Compile Include="IDataParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
