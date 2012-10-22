@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using StringCalculator.Parsing;
 
 namespace StringCalculator.Unit.Tests
 {

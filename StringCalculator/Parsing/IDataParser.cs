@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace StringCalculator
+namespace StringCalculator.Parsing
 {
     public interface IDataParser
     {

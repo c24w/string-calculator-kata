@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StringCalculator
+namespace StringCalculator.Parsing
 {
     public class DefaultNumberListParser : INumberListParser
     {

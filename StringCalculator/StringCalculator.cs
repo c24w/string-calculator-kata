@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StringCalculator.Parsing;
 
 namespace StringCalculator
 {
@@ -18,6 +19,15 @@ namespace StringCalculator
             if (_data.Equals(string.Empty))
                 return 0;
 
+            var parser = SelectParser();
+
+            parser.Parse();
+
+            return parser.Numbers.Sum();
+        }
+
+        private IDataParser SelectParser()
+        {
             IEnumerable<IDataParser> parsers = new List<IDataParser>
             {
                 new CustomDelimiterDataParser(_data),
@@ -27,13 +37,11 @@ namespace StringCalculator
             foreach (var parser in parsers)
             {
                 if (parser.CanParse())
-                {
-                    parser.Parse();
-                    return parser.Numbers.Sum();
-                }
+                    return parser;
             }
 
             throw new Exception("Data could not be parsed: " + _data);
-        }
+       }
+
     }
 }

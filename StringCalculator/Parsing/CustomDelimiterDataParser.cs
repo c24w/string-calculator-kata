@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace StringCalculator
+namespace StringCalculator.Parsing
 {
     public class CustomDelimiterDataParser : IDataParser
     {
