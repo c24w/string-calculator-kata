@@ -2,4 +2,3 @@ C:\work\StringCalculator2\StringCalculator\bin\Debug\StringCalculator.dll
 C:\work\StringCalculator2\StringCalculator\bin\Debug\StringCalculator.pdb
 C:\work\StringCalculator2\StringCalculator\obj\Debug\StringCalculator.dll
 C:\work\StringCalculator2\StringCalculator\obj\Debug\StringCalculator.pdb
-C:\work\StringCalculator2\StringCalculator\obj\Debug\StringCalculator.csprojResolveAssemblyReference.cache
