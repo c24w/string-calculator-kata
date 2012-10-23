@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
@@ -25,7 +24,7 @@ namespace StringCalculator
         {
             string[] values;
 
-            if (Regex.IsMatch(_data, @"^-?\d+(,-?\d+)*$"))
+            if (RegexPatterns.CommaDelimitedPattern.Match(_data).Success)
             {
                 values = _data.Split(new[] { DefaultDelimiter, ConstDelimiter });
 
@@ -33,15 +32,15 @@ namespace StringCalculator
             }
             else
             {
-                var matchBasicParts = Regex.Match(_data, @"^//((?<delimDef>.)|\[(?<delimDef>.+?)\])\n(?<delimNums>-?\d+((.+|\n)-?\d+)*)$", RegexOptions.Compiled);
-
-                if (!matchBasicParts.Success)
+                var matchBasicPattern = RegexPatterns.BasicSyntaxPattern.Match(_data);
+                
+                if (!matchBasicPattern.Success)
                     throw new FormatException("Data cannot be parsed: " + _data);
 
-                var delimCapture = matchBasicParts.Groups["delimDef"].Captures[0].Value;
+                var delimCapture = matchBasicPattern.Groups["delimDef"].Captures[0].Value;
                 var delims = delimCapture.Split(new[] { "][" }, StringSplitOptions.None);
 
-                var valuesCapture = matchBasicParts.Groups["delimNums"].Captures[0].Value;
+                var valuesCapture = matchBasicPattern.Groups["delimNums"].Captures[0].Value;
 
                 _dataValidator.ValidateSyntax(delims, valuesCapture);
 

@@ -17,32 +17,26 @@ namespace StringCalculator
             EnsureOnlyDefinedDelimitersAreUsed(delimiters, delimitedValues);
         }
 
+
         private void CheckForNegatives(IEnumerable<int> numbers)
         {
             var negatives = numbers.Where(i => i < 0).ToArray();
 
             if (negatives.Any())
-            {
-                var message = "cannot contain negative numbers: " + string.Join(",", negatives);
-                UnparseableException(message);
-            }
+                ThrowUnparseable("cannot contain negative numbers: " + string.Join(",", negatives));
         }
 
-        private void EnsureOnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
+        private void EnsureOnlyDefinedDelimitersAreUsed(string[] definedDelimiters, string delimitedValues)
         {
-            var delimiterPattern = Regex.Escape(string.Join("|", delimiters));
-
-            var matchDefinedDelimsPattern = string.Format(@"^-?\d+(({0})-?\d+)*$", delimiterPattern);
-
-            var matchDefinedDelims = Regex.Match(delimitedValues, matchDefinedDelimsPattern, RegexOptions.Compiled);
+            var matchDefinedDelims = RegexPatterns.OnlyAllowDefinedDelimitersPattern(definedDelimiters).Match(delimitedValues);
 
             if (!matchDefinedDelims.Success)
-                UnparseableException("number values contain an undefined delimiter");
+                ThrowUnparseable("number values contain an undefined delimiter");
         }
 
-        private void UnparseableException(string extraInfo)
+        private void ThrowUnparseable(string reason)
         {
-            throw new FormatException(string.Format("Data cannot be parsed ({0})", extraInfo));
+            throw new FormatException(string.Format("Data cannot be parsed ({0})", reason));
         }
     }
 }
