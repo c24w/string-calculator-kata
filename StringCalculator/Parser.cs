@@ -26,17 +26,17 @@ namespace StringCalculator
             }
             else
             {
-                if (!BasicSyntaxIsCorrect())
-                    ThrowUnparseable("data syntax is invalid: " + _data);
+                var custDelimSyntaxMatch = RegexPatterns.CustomDelimiterSyntaxPattern.Match(_data);
 
-                var delimCapture = RegexPatterns.BasicSyntaxPattern.Match(_data).Groups["delimDef"].Captures[0].Value;
-                var delims = delimCapture.Split(new[] { "][" }, StringSplitOptions.None);
+                if (!custDelimSyntaxMatch.Success)
+                    ThrowUnparseable("invalid syntax: " + _data);
 
-                var valuesCapture = RegexPatterns.BasicSyntaxPattern.Match(_data).Groups["delimNums"].Captures[0].Value;
+                var delimCapture = custDelimSyntaxMatch.Groups["delimDef"].Captures[0].Value;
+                var valuesCapture = custDelimSyntaxMatch.Groups["delimNums"].Captures[0].Value;
 
-                ValidateDelimitedData(delims, valuesCapture);
+                var delimiters = delimCapture.Split(new[] { "][" }, StringSplitOptions.None);
 
-                values = valuesCapture.Split(delims, StringSplitOptions.None);
+                values = SplitValuesOnDelimiters(delimiters, valuesCapture);
             }
 
             ParseToIntegers(values);
@@ -44,9 +44,12 @@ namespace StringCalculator
             ValidateParsedNumbers(Numbers);
         }
 
-        private bool BasicSyntaxIsCorrect()
+        private string[] SplitValuesOnDelimiters(string[] delimiters, string valuesCapture)
         {
-            return RegexPatterns.BasicSyntaxPattern.Match(_data).Success;
+            if (OnlyDefinedDelimitersAreUsed(delimiters, valuesCapture) == false)
+                ThrowUnparseable("number values are delimited using an undefined delimiter");
+
+            return valuesCapture.Split(delimiters, StringSplitOptions.None);
         }
 
         private bool IsCommaDelimited()
@@ -72,17 +75,11 @@ namespace StringCalculator
                 ThrowUnparseable("cannot contain negative numbers: " + string.Join(",", negatives));
         }
 
-        public void ValidateDelimitedData(string[] delimiters, string delimitedValues)
-        {
-            EnsureOnlyDefinedDelimitersAreUsed(delimiters, delimitedValues);
-        }
-
-        private void EnsureOnlyDefinedDelimitersAreUsed(string[] definedDelimiters, string delimitedValues)
+        private bool OnlyDefinedDelimitersAreUsed(string[] definedDelimiters, string delimitedValues)
         {
             var matchDefinedDelims = RegexPatterns.OnlyAllowDefinedDelimitersPattern(definedDelimiters).Match(delimitedValues);
 
-            if (!matchDefinedDelims.Success)
-                ThrowUnparseable("number values contain an undefined delimiter");
+            return matchDefinedDelims.Success;
         }
 
         private static void ThrowUnparseable(string reason)

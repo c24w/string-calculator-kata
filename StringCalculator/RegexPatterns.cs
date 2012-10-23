@@ -8,7 +8,7 @@ namespace StringCalculator
         public static readonly Regex CommaDelimitedPattern = new Regex(@"^-?\d+(,-?\d+)*$", RegexOptions.Compiled);
 
         //   capture single char or [char/string]    capture one or more ints (possibly negative); multiple ints delimited by char/string or \n
-        public static readonly Regex BasicSyntaxPattern = new Regex(@"^//((?<delimDef>.)|\[(?<delimDef>.+?)\])\n(?<delimNums>-?\d+((.+|\n)-?\d+)*)$", RegexOptions.Compiled);
+        public static readonly Regex CustomDelimiterSyntaxPattern = new Regex(@"^//((?<delimDef>.)|\[(?<delimDef>.+?)\])\n(?<delimNums>-?\d+((.+|\n)-?\d+)*)$", RegexOptions.Compiled);
 
         public static Regex OnlyAllowDefinedDelimitersPattern(string[] definedDelimiters)
         {
