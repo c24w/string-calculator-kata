@@ -43,34 +43,17 @@ namespace StringCalculator
 
                 var valuesCapture = matchBasicParts.Groups["delimNums"].Captures[0].Value;
 
-                EnsureOnlyDefinedDelimitersAreUsed(delims, valuesCapture);
+                _dataValidator.EnsureOnlyDefinedDelimitersAreUsed(delims, valuesCapture);
 
                 values = valuesCapture.Split(delims, StringSplitOptions.None);
             }
 
-            ParseValues(values);
+            ParseToIntegers(values);
 
             _dataValidator.Validate(Numbers);
         }
 
-        private void EnsureOnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
-        {
-            var delimiterPattern = Regex.Escape(string.Join("|", delimiters));
-
-            var matchDefinedDelimsPattern = string.Format(@"^-?\d+(({0})-?\d+)*$", delimiterPattern);
-
-            var matchDefinedDelims = Regex.Match(delimitedValues, matchDefinedDelimsPattern, RegexOptions.Compiled);
-
-            if (!matchDefinedDelims.Success)
-                UnparseableException("number values contain an undefined delimiter");
-        }
-
-        private void UnparseableException(string extraInfo)
-        {
-            throw new FormatException(string.Format("Data cannot be parsed ({0}): {1}", extraInfo, _data));
-        }
-
-        private void ParseValues(IEnumerable<string> values)
+        private void ParseToIntegers(IEnumerable<string> values)
         {
             Numbers = values.Select(int.Parse).Where(i => i < 1000);
         }

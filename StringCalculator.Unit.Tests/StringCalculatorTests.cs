@@ -104,7 +104,7 @@ namespace StringCalculator.Unit.Tests
         {
             var exception = Assert.Throws(typeof (FormatException), () => new StringCalculator(data).Sum());
 
-            var expectedMessage = "Data cannot be parsed (number values contain an undefined delimiter): " + data;
+            var expectedMessage = "Data cannot be parsed (number values contain an undefined delimiter)";
 
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }

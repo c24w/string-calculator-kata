@@ -19,7 +19,7 @@ namespace StringCalculator.Unit.Tests
 
             var exception = Assert.Throws(typeof(FormatException), () => new StringCalculator(data).Sum());
 
-            var expectedMessage = "Data cannot contain negative numbers: " + negatives;
+            var expectedMessage = string.Format("Data cannot be parsed (cannot contain negative numbers: {0})", negatives);
 
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
@@ -33,8 +33,8 @@ namespace StringCalculator.Unit.Tests
             var data = DataBuilder.GetCharDelimitedData('^', numbers);
 
             var negatives = string.Join(",", numbers.Where(i => i < 0));
-            
-            var expectedMessage = "Data cannot contain negative numbers: " + negatives;
+
+            var expectedMessage = string.Format("Data cannot be parsed (cannot contain negative numbers: {0})", negatives);
 
             var exception = Assert.Throws(typeof(FormatException), () => new StringCalculator(data).Sum());
 
@@ -50,8 +50,8 @@ namespace StringCalculator.Unit.Tests
             var data = DataBuilder.GetStringDelimitedData(":;", numbers);
 
             var negatives = string.Join(",", numbers.Where(i => i < 0));
-            
-            var expectedMessage = "Data cannot contain negative numbers: " + negatives;
+
+            var expectedMessage = string.Format("Data cannot be parsed (cannot contain negative numbers: {0})", negatives);
 
             var exception = Assert.Throws(typeof(FormatException), () => new StringCalculator(data).Sum());
 

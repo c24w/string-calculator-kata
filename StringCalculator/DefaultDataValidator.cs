@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
@@ -11,7 +12,27 @@ namespace StringCalculator
             var negatives = numbers.Where(i => i < 0).ToArray();
 
             if (negatives.Any())
-                throw new FormatException("Data cannot contain negative numbers: " + string.Join(",", negatives));
+            {
+                var message = "cannot contain negative numbers: " + string.Join(",", negatives);
+                UnparseableException(message);
+            }
+        }
+
+        public void EnsureOnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
+        {
+            var delimiterPattern = Regex.Escape(string.Join("|", delimiters));
+
+            var matchDefinedDelimsPattern = string.Format(@"^-?\d+(({0})-?\d+)*$", delimiterPattern);
+
+            var matchDefinedDelims = Regex.Match(delimitedValues, matchDefinedDelimsPattern, RegexOptions.Compiled);
+
+            if (!matchDefinedDelims.Success)
+                UnparseableException("number values contain an undefined delimiter");
+        }
+
+        private void UnparseableException(string extraInfo)
+        {
+            throw new FormatException(string.Format("Data cannot be parsed ({0})", extraInfo));
         }
     }
 }
