@@ -4,7 +4,7 @@ namespace StringCalculator
 {
     public interface IDataValidator
     {
-        void Validate(IEnumerable<int> numbers);
-        void EnsureOnlyDefinedDelimitersAreUsed(string[] delims, string valuesCapture);
+        void ValidateValues(IEnumerable<int> numbers);
+        void ValidateSyntax(string[] delims, string valuesCapture);
     }
 }

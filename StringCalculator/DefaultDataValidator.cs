@@ -7,7 +7,17 @@ namespace StringCalculator
 {
     public class DefaultDataValidator : IDataValidator
     {
-        public void Validate(IEnumerable<int> numbers)
+        public void ValidateValues(IEnumerable<int> numbers)
+        {
+            CheckForNegatives(numbers);
+        }
+
+        public void ValidateSyntax(string[] delimiters, string delimitedValues)
+        {
+            EnsureOnlyDefinedDelimitersAreUsed(delimiters, delimitedValues);
+        }
+
+        private void CheckForNegatives(IEnumerable<int> numbers)
         {
             var negatives = numbers.Where(i => i < 0).ToArray();
 
@@ -18,7 +28,7 @@ namespace StringCalculator
             }
         }
 
-        public void EnsureOnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
+        private void EnsureOnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
         {
             var delimiterPattern = Regex.Escape(string.Join("|", delimiters));
 

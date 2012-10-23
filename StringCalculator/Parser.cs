@@ -43,14 +43,14 @@ namespace StringCalculator
 
                 var valuesCapture = matchBasicParts.Groups["delimNums"].Captures[0].Value;
 
-                _dataValidator.EnsureOnlyDefinedDelimitersAreUsed(delims, valuesCapture);
+                _dataValidator.ValidateSyntax(delims, valuesCapture);
 
                 values = valuesCapture.Split(delims, StringSplitOptions.None);
             }
 
             ParseToIntegers(values);
 
-            _dataValidator.Validate(Numbers);
+            _dataValidator.ValidateValues(Numbers);
         }
 
         private void ParseToIntegers(IEnumerable<string> values)
