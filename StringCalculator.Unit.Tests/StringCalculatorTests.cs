@@ -123,7 +123,7 @@ namespace StringCalculator.Unit.Tests
         {
             var exception = Assert.Throws(typeof (FormatException), () => new StringCalculator(data).Sum());
 
-            var expectedMessage = "Data cannot be parsed: " + data;
+            var expectedMessage = string.Format("Data cannot be parsed (data syntax is invalid: {0})", data);
 
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
         }
