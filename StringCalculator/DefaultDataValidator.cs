@@ -11,9 +11,7 @@ namespace StringCalculator
             var negatives = numbers.Where(i => i < 0).ToArray();
 
             if (negatives.Any())
-            {
-                throw new Exception("Data cannot contain negative numbers: " + string.Join(",", negatives));
-            }
+                throw new FormatException("Data cannot contain negative numbers: " + string.Join(",", negatives));
         }
     }
 }

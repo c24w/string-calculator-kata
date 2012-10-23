@@ -97,6 +97,19 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
+        [TestCase("//#\n1~2")]
+        [TestCase("//[~~~]\n1~~2")]
+        [TestCase("//^\n1^2~3")]
+        public void Exception_is_thrown_when_an_undefined_delimiter_is_used(string data)
+        {
+            var exception = Assert.Throws(typeof (FormatException), () => new StringCalculator(data).Sum());
+
+            var expectedMessage = "Data cannot be parsed (number values contain an undefined delimiter): " + data;
+
+            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+        }
+
+        [Test]
         [TestCase("a")]
         [TestCase("a,b,c")]
         [TestCase(",")]
@@ -104,12 +117,11 @@ namespace StringCalculator.Unit.Tests
         [TestCase(",1,23")]
         [TestCase("1,")]
         [TestCase("1,-23,")]
-        [TestCase("//^\n1^2~3")]
         [TestCase("//#1\n2#3")]
         [TestCase("//[~~]1~~2~~3")]
-        public void Exception_is_thrown_when_no_suitable_parser_is_found(string data)
+        public void Exception_is_thrown_when_data_is_syntactically_incorrect(string data)
         {
-            var exception = Assert.Throws(typeof (Exception), () => new StringCalculator(data).Sum());
+            var exception = Assert.Throws(typeof (FormatException), () => new StringCalculator(data).Sum());
 
             var expectedMessage = "Data cannot be parsed: " + data;
 
