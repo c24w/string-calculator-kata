@@ -6,48 +6,27 @@ namespace StringCalculator
 {
     public class Parser
     {
-        private readonly string _data;
-        public IEnumerable<int> Numbers { get; protected set; }
-        private const char ConstDelimiter = '\n';
+        protected readonly string Data;
+        public IEnumerable<int> Numbers { get; set; }
+        protected const char ConstDelimiter = '\n';
 
         public Parser(string data)
         {
-            _data = data;
+            Data = data;
         }
 
-        public void Parse()
+        public virtual void Parse()
         {
-            string[] values;
-
-            if (IsCommaDelimited())
-            {
-                values = SplitDataOnCommas();
-            }
-            else
-            {
-                var customDelimSyntaxMatcher = new CustomDelimiterSyntaxPatternMatcher(_data);
-
-                if (!customDelimSyntaxMatcher.Success)
-                    throw new UnparseableDataException(_data).InvalidSyntax();
-
-                var capturedDelimiters = customDelimSyntaxMatcher.CapturedDelimiters;
-                var capturedValues = customDelimSyntaxMatcher.CapturedValues;
-
-                var delimiters = SplitDelimiters(capturedDelimiters);
-
-                if (!OnlyDefinedDelimitersAreUsed(delimiters, capturedValues))
-                    throw new UnparseableDataException(_data).UndefinedDelimiter();
-
-                values = SplitValuesOnDelimiters(delimiters, capturedValues);
-            }
+            Parser parser;
             
-            Numbers = ParseToIntegers(values);
-            ValidateParsedNumbers(Numbers);
-        }
+            if(IsCommaDelimited())
+                parser = new CommaDelimitedParser(Data);
+            else
+                parser = new CustomDelimiterParser(Data);
 
-        private string[] SplitDataOnCommas()
-        {
-            return _data.Split(new[] { ',', ConstDelimiter });
+            parser.Parse();
+            Numbers = parser.Numbers;
+            ValidateParsedNumbers(Numbers);
         }
 
         private static string[] SplitDelimiters(string capturedDelimiters)
@@ -62,7 +41,7 @@ namespace StringCalculator
 
         private bool IsCommaDelimited()
         {
-            return RegexPatterns.MatchCommaDelimitedSyntax.Match(_data).Success;
+            return RegexPatterns.MatchCommaDelimitedSyntax.Match(Data).Success;
         }
 
         private bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
@@ -81,13 +60,8 @@ namespace StringCalculator
 
             if (negatives.Any())
             {
-                throw new UnparseableDataException(_data).ContainsNegatives(negatives);
+                throw new UnparseableDataException(Data).ContainsNegatives(negatives);
             }
-        }
-
-        private IEnumerable<int> ParseToIntegers(IEnumerable<string> values)
-        {
-            return values.Select(int.Parse).Where(i => i < 1000);
         }
     }
 }

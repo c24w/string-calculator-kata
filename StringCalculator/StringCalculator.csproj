@@ -39,8 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommaDelimitedParser.cs" />
+    <Compile Include="CustomDelimiterParser.cs" />
     <Compile Include="CustomDelimiterSyntaxPatternMatcher.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="ParserTools.cs" />
     <Compile Include="RegexPatterns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringCalculator.cs" />
