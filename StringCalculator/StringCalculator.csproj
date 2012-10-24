@@ -40,8 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommaDelimitedParser.cs" />
-    <Compile Include="CustomDelimiterParser.cs" />
-    <Compile Include="CustomDelimiterSyntaxMatcher.cs" />
+    <Compile Include="CustomDelimitedParser.cs" />
+    <Compile Include="CustomDelimitedSyntaxMatcher.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParserTools.cs" />
     <Compile Include="RegexPatterns.cs" />

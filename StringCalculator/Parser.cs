@@ -16,15 +16,31 @@ namespace StringCalculator
 
         public virtual void Parse()
         {
-            var parser = IsCommaDelimited() ? (Parser) new CommaDelimitedParser(Data) : new CustomDelimiterParser(Data);
+            var parser = SelectParser();
             parser.Parse();
             Numbers = parser.Numbers;
             ValidateParsedNumbers(Numbers);
         }
 
+        private Parser SelectParser()
+        {
+            if (IsCommaDelimited())
+                return new CommaDelimitedParser(Data);
+
+            if (IsCustomDelimited())
+                return new CustomDelimitedParser(Data);
+
+            throw new UnparseableDataException(Data).InvalidSyntax();
+        }
+
         private bool IsCommaDelimited()
         {
-            return RegexPatterns.MatchCommaDelimitedSyntax.Match(Data).Success;
+            return RegexPatterns.GetDefinedDelimitersPattern(",").Match(Data).Success;
+        }
+
+        private bool IsCustomDelimited()
+        {
+            return RegexPatterns.MatchCustomDelimiterSyntax.Match(Data).Success;
         }
 
         public void ValidateParsedNumbers(IEnumerable<int> numbers)

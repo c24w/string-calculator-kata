@@ -2,11 +2,11 @@ using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
-    class CustomDelimiterSyntaxMatcher
+    class CustomDelimitedSyntaxMatcher
     {
         private Match _match;
 
-        public CustomDelimiterSyntaxMatcher(string testSubject)
+        public CustomDelimitedSyntaxMatcher(string testSubject)
         {
             ApplyPattern(testSubject);
         }
@@ -14,11 +14,6 @@ namespace StringCalculator
         public void ApplyPattern(string testSubject)
         {
             _match = RegexPatterns.MatchCustomDelimiterSyntax.Match(testSubject);
-        }
-
-        public bool Success
-        {
-            get { return _match.Success; }
         }
 
         public string CapturedDelimiters

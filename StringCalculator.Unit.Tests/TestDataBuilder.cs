@@ -1,6 +1,6 @@
 namespace StringCalculator.Unit.Tests
 {
-    public class DataBuilder
+    public class TestDataBuilder
     {
         public static string GetCharDelimitedData(char delimiter, params int[] numbers)
         {

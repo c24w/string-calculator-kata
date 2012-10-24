@@ -3,16 +3,13 @@ using System.Collections.Generic;
 
 namespace StringCalculator
 {
-    class CustomDelimiterParser : Parser
+    class CustomDelimitedParser : Parser
     {
-        public CustomDelimiterParser(string data) : base(data) { }
+        public CustomDelimitedParser(string data) : base(data) { }
 
         public override void Parse()
         {
-            var customDelimSyntaxMatcher = new CustomDelimiterSyntaxMatcher(Data);
-
-            if (!customDelimSyntaxMatcher.Success)
-                throw new UnparseableDataException(Data).InvalidSyntax();
+            var customDelimSyntaxMatcher = new CustomDelimitedSyntaxMatcher(Data);
 
             var capturedDelimiters = customDelimSyntaxMatcher.CapturedDelimiters;
             var capturedValues = customDelimSyntaxMatcher.CapturedValues;
@@ -39,7 +36,7 @@ namespace StringCalculator
 
         private static bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
         {
-            return RegexPatterns.MatchDefinedDelimiters(delimiters).Match(delimitedValues).Success;
+            return RegexPatterns.GetDefinedDelimitersPattern(delimiters).Match(delimitedValues).Success;
         }
     }
 }

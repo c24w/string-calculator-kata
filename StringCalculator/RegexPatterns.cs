@@ -4,29 +4,18 @@ namespace StringCalculator
 {
     public class RegexPatterns
     {
-
-        public static readonly Regex MatchCommaDelimitedSyntax = new Regex(
-            /* capture one or more ints (possibly negative) - \n or comma-delimited */
-            @"^-?\d+(,-?\d+)*$"
-            , RegexOptions.Compiled
-        );
-
-
         public static readonly Regex MatchCustomDelimiterSyntax = new Regex(
             @"^//((?<delimDef>.)|\[(?<delimDef>.+?)\])\n(?<delimNums>-?\d+((.+|\n)-?\d+)*)$"
-            /*   capture 1 char | >=1 chars in []       capture >=1 ints (possibly negative) delimited by >=1 char or \n
+            /*   capture 1 char | >=1 char(s) in []     capture int(s) (length >=1) (possibly negative) delimited by char(s) (length >=1)
             /*   note: .+? = lazy, i.e. won't consume the subsequent ]   */
             , RegexOptions.Compiled
         );
 
-
-        public static Regex MatchDefinedDelimiters(string[] definedDelimiters)
+        public static Regex GetDefinedDelimitersPattern(params string[] delimiters)
         {
-            var delimsOptionsPattern = Regex.Escape(string.Join("|", definedDelimiters));
-
-            var onlyMatchDefinedDelimitersPattern = string.Format(@"^-?\d+(({0})-?\d+)*$", delimsOptionsPattern);
-
-            return new Regex(onlyMatchDefinedDelimitersPattern, RegexOptions.Compiled);
+            var delimiterPattern = Regex.Escape(string.Join("|", delimiters));
+            var pattern = string.Format(@"^-?\d+(({0})-?\d+)*$", delimiterPattern); // capture one or more ints (possibly negative) delimited by contents of string[] argument
+            return new Regex(pattern, RegexOptions.Compiled);
         }
     }
-} 
+}
