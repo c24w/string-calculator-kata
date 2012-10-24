@@ -103,7 +103,7 @@ namespace StringCalculator.Unit.Tests
         public void Exception_is_thrown_when_an_undefined_custom_delimiter_is_used(string data)
         {
             var expectedException = new UnparseableDataException(data).UndefinedDelimiter();
-
+            
             var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
 
             Assert.That(exception, Is.EqualTo(expectedException));

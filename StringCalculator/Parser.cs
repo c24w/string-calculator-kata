@@ -3,11 +3,17 @@ using System.Linq;
 
 namespace StringCalculator
 {
-    public class Parser
+    public interface IParser
+    {
+        IEnumerable<int> Numbers { get; set; }
+        void Parse();
+    }
+
+    public class Parser : IParser
     {
         protected readonly string Data;
-        public IEnumerable<int> Numbers { get; set; }
         protected const char ConstDelimiter = '\n';
+        public IEnumerable<int> Numbers { get; set; }
 
         public Parser(string data)
         {
@@ -16,6 +22,12 @@ namespace StringCalculator
 
         public virtual void Parse()
         {
+            if (Data.Equals(string.Empty))
+            {
+                Numbers = new[] {0};
+                return;
+            }
+
             var parser = SelectParser();
             parser.Parse();
             Numbers = parser.Numbers;
@@ -45,17 +57,14 @@ namespace StringCalculator
 
         public void ValidateParsedNumbers(IEnumerable<int> numbers)
         {
-            CheckForNegatives(numbers);
+            var negatives = GetNegativeValues(numbers).ToArray();
+            if (negatives.Any())
+                throw new UnparseableDataException(Data).ContainsNegatives(negatives);
         }
 
-        private void CheckForNegatives(IEnumerable<int> numbers)
+        private static IEnumerable<int> GetNegativeValues(IEnumerable<int> numbers)
         {
-            var negatives = numbers.Where(i => i < 0).ToArray();
-
-            if (negatives.Any())
-            {
-                throw new UnparseableDataException(Data).ContainsNegatives(negatives);
-            }
+            return numbers.Where(i => i < 0);
         }
     }
 }

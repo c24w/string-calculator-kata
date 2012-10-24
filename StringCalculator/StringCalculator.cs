@@ -13,13 +13,8 @@ namespace StringCalculator
 
         public int Sum()
         {
-            if (_data.Equals(string.Empty))
-                return 0;
-
             var parser = new Parser(_data);
-            
             parser.Parse();
-
             return parser.Numbers.Sum();
         }
     }
