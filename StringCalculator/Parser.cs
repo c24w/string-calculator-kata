@@ -26,13 +26,15 @@ namespace StringCalculator
             }
             else
             {
-                var custDelimSyntaxMatch = RegexPatterns.CustomDelimiterSyntaxPattern.Match(_data);
+                var customDelimSyntaxMatch = RegexPatterns.CustomDelimiterSyntaxPattern.Match(_data);
 
-                if (!custDelimSyntaxMatch.Success)
-                    ThrowUnparseable("invalid syntax: " + _data);
+                if (!customDelimSyntaxMatch.Success)
+                {
+                    throw new UnparseableDataException(_data).InvalidSyntax();
+                }
 
-                var delimCapture = custDelimSyntaxMatch.Groups["delimDef"].Captures[0].Value;
-                var valuesCapture = custDelimSyntaxMatch.Groups["delimNums"].Captures[0].Value;
+                var delimCapture = customDelimSyntaxMatch.Groups["delimDef"].Captures[0].Value;
+                var valuesCapture = customDelimSyntaxMatch.Groups["delimNums"].Captures[0].Value;
 
                 var delimiters = delimCapture.Split(new[] { "][" }, StringSplitOptions.None);
 
@@ -47,7 +49,9 @@ namespace StringCalculator
         private string[] SplitValuesOnDelimiters(string[] delimiters, string valuesCapture)
         {
             if (OnlyDefinedDelimitersAreUsed(delimiters, valuesCapture) == false)
-                ThrowUnparseable("number values are delimited using an undefined delimiter");
+            {
+                throw new UnparseableDataException(_data).UndefinedDelimiter();
+            }
 
             return valuesCapture.Split(delimiters, StringSplitOptions.None);
         }
@@ -72,7 +76,9 @@ namespace StringCalculator
             var negatives = numbers.Where(i => i < 0).ToArray();
 
             if (negatives.Any())
-                ThrowUnparseable("cannot contain negative numbers: " + string.Join(",", negatives));
+            {
+                throw new UnparseableDataException(_data).ContainsNegatives(negatives);
+            }
         }
 
         private bool OnlyDefinedDelimitersAreUsed(string[] definedDelimiters, string delimitedValues)
@@ -80,11 +86,6 @@ namespace StringCalculator
             var matchDefinedDelims = RegexPatterns.OnlyAllowDefinedDelimitersPattern(definedDelimiters).Match(delimitedValues);
 
             return matchDefinedDelims.Success;
-        }
-
-        private static void ThrowUnparseable(string reason)
-        {
-            throw new FormatException(string.Format("Data cannot be parsed ({0})", reason));
         }
     }
 }

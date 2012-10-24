@@ -102,11 +102,11 @@ namespace StringCalculator.Unit.Tests
         [TestCase("//^\n1^2~3")]
         public void Exception_is_thrown_when_an_undefined_delimiter_is_used(string data)
         {
-            var exception = Assert.Throws(typeof (FormatException), () => new StringCalculator(data).Sum());
+            var expectedException = new UnparseableDataException(data).UndefinedDelimiter();
 
-            var expectedMessage = "Data cannot be parsed (number values are delimited using an undefined delimiter)";
+            var exception = Assert.Throws(typeof(UnparseableDataException), () => new StringCalculator(data).Sum());
 
-            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+            Assert.That(exception, Is.EqualTo(expectedException));
         }
 
         [Test]
@@ -121,11 +121,11 @@ namespace StringCalculator.Unit.Tests
         [TestCase("//[~~]1~~2~~3")]
         public void Exception_is_thrown_when_data_is_syntactically_incorrect(string data)
         {
-            var exception = Assert.Throws(typeof (FormatException), () => new StringCalculator(data).Sum());
+            var expectedException = new UnparseableDataException(data).InvalidSyntax();
 
-            var expectedMessage = string.Format("Data cannot be parsed (invalid syntax: {0})", data);
+            var exception = Assert.Throws(typeof(UnparseableDataException), () => new StringCalculator(data).Sum());
 
-            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+            Assert.That(exception, Is.EqualTo(expectedException));
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace StringCalculator.Unit.Tests
         public void Comma_delimited_numbers_greater_than_999_are_ignored(int expected, params int[] numbers)
         {
             var data = string.Join(",", numbers);
-            
+
             var sum = new StringCalculator(data).Sum();
 
             Assert.That(sum, Is.EqualTo(expected));
