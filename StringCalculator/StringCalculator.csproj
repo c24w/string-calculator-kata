@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="CommaDelimitedParser.cs" />
     <Compile Include="CustomDelimiterParser.cs" />
-    <Compile Include="CustomDelimiterSyntaxPatternMatcher.cs" />
+    <Compile Include="CustomDelimiterSyntaxMatcher.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParserTools.cs" />
     <Compile Include="RegexPatterns.cs" />

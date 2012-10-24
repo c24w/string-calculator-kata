@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,36 +16,15 @@ namespace StringCalculator
 
         public virtual void Parse()
         {
-            Parser parser;
-            
-            if(IsCommaDelimited())
-                parser = new CommaDelimitedParser(Data);
-            else
-                parser = new CustomDelimiterParser(Data);
-
+            var parser = IsCommaDelimited() ? (Parser) new CommaDelimitedParser(Data) : new CustomDelimiterParser(Data);
             parser.Parse();
             Numbers = parser.Numbers;
             ValidateParsedNumbers(Numbers);
         }
 
-        private static string[] SplitDelimiters(string capturedDelimiters)
-        {
-            return capturedDelimiters.Split(new[] { "][" }, StringSplitOptions.None);
-        }
-
-        private string[] SplitValuesOnDelimiters(string[] delimiters, string capturedValues)
-        {
-            return capturedValues.Split(delimiters, StringSplitOptions.None);
-        }
-
         private bool IsCommaDelimited()
         {
             return RegexPatterns.MatchCommaDelimitedSyntax.Match(Data).Success;
-        }
-
-        private bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
-        {
-            return RegexPatterns.MatchDefinedDelimiters(delimiters).Match(delimitedValues).Success;
         }
 
         public void ValidateParsedNumbers(IEnumerable<int> numbers)

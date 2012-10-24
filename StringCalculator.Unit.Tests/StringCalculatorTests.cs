@@ -15,6 +15,7 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
+        [TestCase("0", 0)]
         [TestCase("1", 1)]
         [TestCase("123", 123)]
         public void Single_number_returns_that_number(string data, int expected)
@@ -25,6 +26,7 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
+        [TestCase("0,1", 1)]
         [TestCase("1,2,3", 6)]
         [TestCase("1,22,333", 356)]
         public void Comma_delimited_numbers_returns_the_sum(string data, int expectedSum)
@@ -87,7 +89,6 @@ namespace StringCalculator.Unit.Tests
         [Test]
         [TestCase(1)]
         [TestCase(234)]
-        [Ignore]
         public void Multiple_custom_char_or_string_delimited_single_number_returns_that_number(int number)
         {
             var sum = new StringCalculator("//[a][bc]\n" + number).Sum();
@@ -167,7 +168,7 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
-        [TestCase(-1)]
+        [TestCase(new[] { -1 })]
         [TestCase(1, -2)]
         [TestCase(-111, 22, -3)]
         public void Comma_delimited_data_containing_negative_numbers_throws_an_exception(params int[] numbers)
@@ -182,7 +183,7 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
-        [TestCase(-1)]
+        [TestCase(new []{-1})]
         [TestCase(1, -2)]
         [TestCase(-111, 22, -3)]
         public void Custom_char_delimited_data_containing_negative_numbers_throws_an_exception(params int[] numbers)
@@ -197,7 +198,7 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
-        [TestCase(-1)]
+        [TestCase(new []{-1})]
         [TestCase(1, -2)]
         [TestCase(-111, 22, -3)]
         public void Custom_string_delimited_data_containing_negative_numbers_throws_an_exception(params int[] numbers)

@@ -2,11 +2,11 @@ using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
-    class CustomDelimiterSyntaxPatternMatcher
+    class CustomDelimiterSyntaxMatcher
     {
         private Match _match;
 
-        public CustomDelimiterSyntaxPatternMatcher(string testSubject)
+        public CustomDelimiterSyntaxMatcher(string testSubject)
         {
             ApplyPattern(testSubject);
         }

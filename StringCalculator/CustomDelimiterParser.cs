@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace StringCalculator
 {
@@ -8,7 +9,7 @@ namespace StringCalculator
 
         public override void Parse()
         {
-            var customDelimSyntaxMatcher = new CustomDelimiterSyntaxPatternMatcher(Data);
+            var customDelimSyntaxMatcher = new CustomDelimiterSyntaxMatcher(Data);
 
             if (!customDelimSyntaxMatcher.Success)
                 throw new UnparseableDataException(Data).InvalidSyntax();
@@ -31,12 +32,12 @@ namespace StringCalculator
             return capturedDelimiters.Split(new[] { "][" }, StringSplitOptions.None);
         }
 
-        private string[] SplitValuesOnDelimiters(string[] delimiters, string capturedValues)
+        private static IEnumerable<string> SplitValuesOnDelimiters(string[] delimiters, string capturedValues)
         {
             return capturedValues.Split(delimiters, StringSplitOptions.None);
         }
 
-        private bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
+        private static bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
         {
             return RegexPatterns.MatchDefinedDelimiters(delimiters).Match(delimitedValues).Success;
         }
