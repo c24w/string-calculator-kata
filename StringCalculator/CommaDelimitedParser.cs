@@ -8,11 +8,10 @@ namespace StringCalculator
 
         public override void Parse()
         {
-            var values = SplitDataOnCommas();
-            Numbers = ParserTools.ParseToIntegers(values);
+            Numbers = ParseToIntegers(SplitValues());
         }
 
-        private IEnumerable<string> SplitDataOnCommas()
+        private IEnumerable<string> SplitValues()
         {
             return Data.Split(new[] { ',', ConstDelimiter });
         }

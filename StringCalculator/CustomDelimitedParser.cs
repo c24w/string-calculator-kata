@@ -9,19 +9,18 @@ namespace StringCalculator
 
         public override void Parse()
         {
-            var customDelimSyntaxMatcher = new CustomDelimitedSyntaxMatcher(Data);
+            var customDelimMatcher = new CustomDelimitedSyntaxMatcher(Data);
+            var capturedDelims = customDelimMatcher.CapturedDelimiters;
+            var capturedValues = customDelimMatcher.CapturedValues;
 
-            var capturedDelimiters = customDelimSyntaxMatcher.CapturedDelimiters;
-            var capturedValues = customDelimSyntaxMatcher.CapturedValues;
-
-            var delimiters = SplitDelimiters(capturedDelimiters);
+            var delimiters = SplitDelimiters(capturedDelims);
 
             if (!OnlyDefinedDelimitersAreUsed(delimiters, capturedValues))
                 throw new UnparseableDataException(Data).UndefinedDelimiter();
 
             var values = SplitValuesOnDelimiters(delimiters, capturedValues);
 
-            Numbers = ParserTools.ParseToIntegers(values);
+            Numbers = ParseToIntegers(values);
         }
 
         private static string[] SplitDelimiters(string capturedDelimiters)

@@ -66,5 +66,10 @@ namespace StringCalculator
         {
             return numbers.Where(i => i < 0);
         }
+
+        public static IEnumerable<int> ParseToIntegers(IEnumerable<string> values)
+        {
+            return values.Select(int.Parse).Where(i => i < 1000);
+        }
     }
 }
