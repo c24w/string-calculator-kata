@@ -29,4 +29,4 @@ namespace StringCalculator
             return new Regex(onlyMatchDefinedDelimitersPattern, RegexOptions.Compiled);
         }
     }
-}
+} 
