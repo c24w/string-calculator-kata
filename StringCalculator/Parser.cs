@@ -2,9 +2,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using StringCalculator;
 
 namespace StringCalculator
 {
+    class CustomDelimiterSyntaxPatternMatcher
+    {
+        private Match _match;
+
+        public CustomDelimiterSyntaxPatternMatcher(string testSubject)
+        {
+            ApplyPattern(testSubject);
+        }
+
+        public void ApplyPattern(string testSubject)
+        {
+            _match = RegexPatterns.CustomDelimiterSyntaxPattern.Match(testSubject);
+        }
+
+        public bool Success
+        {
+            get { return _match.Success; }
+        }
+
+        public string CapturedDelimiter
+        {
+            get { return _match.Groups["delimDef"].Captures[0].Value; }
+        }
+
+        public string CapturedValues
+        {
+            get { return _match.Groups["delimNums"].Captures[0].Value; }
+        }
+    }
+
     public class Parser
     {
         private readonly string _data;
@@ -26,15 +57,15 @@ namespace StringCalculator
             }
             else
             {
-                var customDelimSyntaxMatch = RegexPatterns.CustomDelimiterSyntaxPattern.Match(_data);
+                var customDelimSyntaxMatch = new CustomDelimiterSyntaxPatternMatcher(_data);
 
                 if (!customDelimSyntaxMatch.Success)
                 {
                     throw new UnparseableDataException(_data).InvalidSyntax();
                 }
 
-                var delimCapture = customDelimSyntaxMatch.Groups["delimDef"].Captures[0].Value;
-                var valuesCapture = customDelimSyntaxMatch.Groups["delimNums"].Captures[0].Value;
+                var delimCapture = customDelimSyntaxMatch.CapturedDelimiter;
+                var valuesCapture = customDelimSyntaxMatch.CapturedValues;
 
                 var delimiters = delimCapture.Split(new[] { "][" }, StringSplitOptions.None);
 
