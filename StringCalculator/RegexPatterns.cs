@@ -4,13 +4,23 @@ namespace StringCalculator
 {
     public class RegexPatterns
     {
-        // capture one or more ints (possibly negative) - \n or comma-delimited
-        public static readonly Regex CommaDelimitedPattern = new Regex(@"^-?\d+(,-?\d+)*$", RegexOptions.Compiled);
 
-        //   capture single char or [char/string]    capture one or more ints (possibly negative); multiple ints delimited by char/string or \n
-        public static readonly Regex CustomDelimiterSyntaxPattern = new Regex(@"^//((?<delimDef>.)|\[(?<delimDef>.+?)\])\n(?<delimNums>-?\d+((.+|\n)-?\d+)*)$", RegexOptions.Compiled);
+        public static readonly Regex MatchCommaDelimitedSyntax = new Regex(
+            /* capture one or more ints (possibly negative) - \n or comma-delimited */
+            @"^-?\d+(,-?\d+)*$"
+            , RegexOptions.Compiled
+        );
 
-        public static Regex OnlyAllowDefinedDelimitersPattern(string[] definedDelimiters)
+
+        public static readonly Regex MatchCustomDelimiterSyntax = new Regex(
+            @"^//((?<delimDef>.)|\[(?<delimDef>.+?)\])\n(?<delimNums>-?\d+((.+|\n)-?\d+)*)$"
+            /*   capture 1 char | >=1 chars in []       capture >=1 ints (possibly negative) delimited by >=1 char or \n
+            /*   note: .+? = lazy, i.e. won't consume the subsequent ]   */
+            , RegexOptions.Compiled
+        );
+
+
+        public static Regex OnlyMatchDefinedDelimiters(string[] definedDelimiters)
         {
             var delimsOptionsPattern = Regex.Escape(string.Join("|", definedDelimiters));
 

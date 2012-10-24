@@ -1,41 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using StringCalculator;
 
 namespace StringCalculator
 {
-    class CustomDelimiterSyntaxPatternMatcher
-    {
-        private Match _match;
-
-        public CustomDelimiterSyntaxPatternMatcher(string testSubject)
-        {
-            ApplyPattern(testSubject);
-        }
-
-        public void ApplyPattern(string testSubject)
-        {
-            _match = RegexPatterns.CustomDelimiterSyntaxPattern.Match(testSubject);
-        }
-
-        public bool Success
-        {
-            get { return _match.Success; }
-        }
-
-        public string CapturedDelimiter
-        {
-            get { return _match.Groups["delimDef"].Captures[0].Value; }
-        }
-
-        public string CapturedValues
-        {
-            get { return _match.Groups["delimNums"].Captures[0].Value; }
-        }
-    }
-
     public class Parser
     {
         private readonly string _data;
@@ -89,7 +58,7 @@ namespace StringCalculator
 
         private bool IsCommaDelimited()
         {
-            return RegexPatterns.CommaDelimitedPattern.Match(_data).Success;
+            return RegexPatterns.MatchCommaDelimitedSyntax.Match(_data).Success;
         }
 
         private void ParseToIntegers(IEnumerable<string> values)
@@ -114,7 +83,7 @@ namespace StringCalculator
 
         private bool OnlyDefinedDelimitersAreUsed(string[] definedDelimiters, string delimitedValues)
         {
-            var matchDefinedDelims = RegexPatterns.OnlyAllowDefinedDelimitersPattern(definedDelimiters).Match(delimitedValues);
+            var matchDefinedDelims = RegexPatterns.OnlyMatchDefinedDelimiters(definedDelimiters).Match(delimitedValues);
 
             return matchDefinedDelims.Success;
         }

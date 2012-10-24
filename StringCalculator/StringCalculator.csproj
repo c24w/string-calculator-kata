@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomDelimiterSyntaxPatternMatcher.cs" />
     <Compile Include="IDataValidator.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="RegexPatterns.cs" />
