@@ -104,7 +104,7 @@ namespace StringCalculator.Unit.Tests
         {
             var expectedException = new UnparseableDataException(data).UndefinedDelimiter();
 
-            var exception = Assert.Throws(typeof(UnparseableDataException), () => new StringCalculator(data).Sum());
+            var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
 
             Assert.That(exception, Is.EqualTo(expectedException));
         }
@@ -123,7 +123,7 @@ namespace StringCalculator.Unit.Tests
         {
             var expectedException = new UnparseableDataException(data).InvalidSyntax();
 
-            var exception = Assert.Throws(typeof(UnparseableDataException), () => new StringCalculator(data).Sum());
+            var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
 
             Assert.That(exception, Is.EqualTo(expectedException));
         }

@@ -15,12 +15,7 @@ namespace StringCalculator
             }
         }
 
-        public UnparseableDataException(string badData) : base(BuildMessage(badData)) { }
-
-        private static string BuildMessage(string badData)
-        {
-            return string.Format("Cannot parse: {0}", badData);
-        }
+        public UnparseableDataException(string badData) : base("Cannot parse: " + badData) { }
 
         public UnparseableDataException ContainsNegatives(IEnumerable<int> negativeNumbers)
         {
@@ -55,7 +50,7 @@ namespace StringCalculator
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((UnparseableDataException) obj);
+            return Equals((UnparseableDataException)obj);
         }
 
         public override int GetHashCode()

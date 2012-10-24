@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using NUnit.Framework;
 
@@ -16,8 +15,8 @@ namespace StringCalculator.Unit.Tests
             var data = string.Join(",", numbers);
             var negatives = numbers.Where(i => i < 0);
             var expectedException = new UnparseableDataException(data).ContainsNegatives(negatives);
-            
-            var exception = Assert.Throws(typeof(UnparseableDataException), () => new StringCalculator(data).Sum());
+
+            var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
             
             Assert.That(exception, Is.EqualTo(expectedException));
         }
@@ -32,7 +31,7 @@ namespace StringCalculator.Unit.Tests
             var negatives = numbers.Where(i => i < 0);
             var expectedException = new UnparseableDataException(data).ContainsNegatives(negatives);
 
-            var exception = Assert.Throws(typeof(UnparseableDataException), () => new StringCalculator(data).Sum());
+            var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
 
             Assert.That(exception, Is.EqualTo(expectedException));
         }
@@ -47,7 +46,7 @@ namespace StringCalculator.Unit.Tests
             var negatives = numbers.Where(i => i < 0);
             var expectedException = new UnparseableDataException(data).ContainsNegatives(negatives);
 
-            var exception = Assert.Throws(typeof(UnparseableDataException), () => new StringCalculator(data).Sum());
+            var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
 
             Assert.That(exception, Is.EqualTo(expectedException));
         }

@@ -26,15 +26,13 @@ namespace StringCalculator
             }
             else
             {
-                var customDelimSyntaxMatch = new CustomDelimiterSyntaxPatternMatcher(_data);
+                var customDelimSyntaxMatcher = new CustomDelimiterSyntaxPatternMatcher(_data);
 
-                if (!customDelimSyntaxMatch.Success)
-                {
+                if (!customDelimSyntaxMatcher.Success)
                     throw new UnparseableDataException(_data).InvalidSyntax();
-                }
 
-                var delimCapture = customDelimSyntaxMatch.CapturedDelimiter;
-                var valuesCapture = customDelimSyntaxMatch.CapturedValues;
+                var delimCapture = customDelimSyntaxMatcher.CapturedDelimiter;
+                var valuesCapture = customDelimSyntaxMatcher.CapturedValues;
 
                 var delimiters = delimCapture.Split(new[] { "][" }, StringSplitOptions.None);
 
