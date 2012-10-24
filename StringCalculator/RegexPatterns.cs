@@ -20,7 +20,7 @@ namespace StringCalculator
         );
 
 
-        public static Regex OnlyMatchDefinedDelimiters(string[] definedDelimiters)
+        public static Regex MatchDefinedDelimiters(string[] definedDelimiters)
         {
             var delimsOptionsPattern = Regex.Escape(string.Join("|", definedDelimiters));
 

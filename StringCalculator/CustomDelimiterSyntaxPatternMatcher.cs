@@ -21,7 +21,7 @@ namespace StringCalculator
             get { return _match.Success; }
         }
 
-        public string CapturedDelimiter
+        public string CapturedDelimiters
         {
             get { return _match.Groups["delimDef"].Captures[0].Value; }
         }
