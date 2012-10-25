@@ -3,73 +3,69 @@ using System.Linq;
 
 namespace StringCalculator
 {
-    public interface IParser
-    {
-        IEnumerable<int> Numbers { get; set; }
-        void Parse();
-    }
+	public interface IParser
+	{
+		IEnumerable<int> Numbers { get; set; }
+		void Parse();
+	}
 
-    public class Parser : IParser
-    {
-        protected readonly string Data;
-        public const char ConstDelimiter = '\n';
-        public IEnumerable<int> Numbers { get; set; }
+	public class Parser : IParser
+	{
+		protected readonly string Data;
+		public const char ConstDelimiter = '\n';
+		public IEnumerable<int> Numbers { get; set; }
 
-        public Parser(string data)
-        {
-            Data = data;
-        }
+		public Parser(string data)
+		{
+			Data = data;
+		}
 
-        public virtual void Parse()
-        {
-            if (Data.Equals(string.Empty))
-            {
-                Numbers = new[] { 0 };
-                return;
-            }
+		public virtual void Parse()
+		{
+			if (Data.Equals(string.Empty))
+			{
+				Numbers = new[] { 0 };
+				return;
+			}
 
-            var parser = SelectParser();
-            parser.Parse();
-            Numbers = parser.Numbers;
-            ValidateParsedNumbers(Numbers);
-        }
+			var parser = SelectParser();
+			parser.Parse();
+			Numbers = parser.Numbers;
+			ValidateParsedNumbers(Numbers);
+		}
 
-        private Parser SelectParser()
-        {
-            if (IsCommaDelimited())
-                return new CommaDelimitedParser(Data);
+		private Parser SelectParser()
+		{
+			if (IsCommaDelimited())
+				return new CommaDelimitedParser(Data);
 
-            if (IsCustomDelimited())
-                return new CustomDelimitedParser(Data);
+			var customDelimSyntaxMatcher = new CustomDelimitedSyntaxMatcher(Data);
+			if (customDelimSyntaxMatcher.Success)
+				return new CustomDelimitedParser(Data, customDelimSyntaxMatcher);
 
-            throw new UnparseableDataException(Data).InvalidSyntax();
-        }
+			throw new UnparseableDataException(Data).InvalidSyntax();
+		}
 
-        private bool IsCommaDelimited()
-        {
-            return RegexPatterns.EnforceValuesDelimitedByDefinedDelimiters(',').Match(Data).Success;
-        }
+		private bool IsCommaDelimited()
+		{
+			return RegexPatterns.MatchCommaDelimited().Match(Data).Success;
+		}
 
-        private bool IsCustomDelimited()
-        {
-            return RegexPatterns.MatchCustomDelimiterSyntax.Match(Data).Success;
-        }
+		public void ValidateParsedNumbers(IEnumerable<int> numbers)
+		{
+			var negatives = GetNegativeValues(numbers).ToArray();
+			if (negatives.Any())
+				throw new UnparseableDataException(Data).ContainsNegatives(negatives);
+		}
 
-        public void ValidateParsedNumbers(IEnumerable<int> numbers)
-        {
-            var negatives = GetNegativeValues(numbers).ToArray();
-            if (negatives.Any())
-                throw new UnparseableDataException(Data).ContainsNegatives(negatives);
-        }
+		private static IEnumerable<int> GetNegativeValues(IEnumerable<int> numbers)
+		{
+			return numbers.Where(i => i < 0);
+		}
 
-        private static IEnumerable<int> GetNegativeValues(IEnumerable<int> numbers)
-        {
-            return numbers.Where(i => i < 0);
-        }
-
-        public static IEnumerable<int> ParseToIntegers(IEnumerable<string> values)
-        {
-            return values.Select(int.Parse).Where(i => i < 1000);
-        }
-    }
+		public static IEnumerable<int> ParseToIntegers(IEnumerable<string> values)
+		{
+			return values.Select(int.Parse).Where(i => i < 1000);
+		}
+	}
 }

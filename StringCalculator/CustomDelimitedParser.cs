@@ -1,47 +1,59 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace StringCalculator
 {
-    class CustomDelimitedParser : Parser
-    {
-        public CustomDelimitedParser(string data) : base(data) { }
+	class CustomDelimitedParser : Parser
+	{
+		private readonly CustomDelimitedSyntaxMatcher _customDelimSyntaxMatcher;
 
-        public override void Parse()
-        {
-            var customDelimMatcher = new CustomDelimitedSyntaxMatcher(Data);
-            var capturedDelims = customDelimMatcher.CapturedDelimiters;
-            var capturedValues = customDelimMatcher.CapturedValues;
+		public CustomDelimitedParser(string data, CustomDelimitedSyntaxMatcher customDelimSyntaxMatcher) : base(data)
+		{
+			_customDelimSyntaxMatcher = customDelimSyntaxMatcher;
+		}
 
-            var delimiters = SplitDelimiters(capturedDelims);
+		public override void Parse()
+		{
+			var customDelimMatcher = new CustomDelimitedSyntaxMatcher(Data);
+			var capturedDelims = customDelimMatcher.CapturedDelimitersDefinition;
+			var capturedValues = customDelimMatcher.CapturedValues;
 
-            if (!OnlyDefinedDelimitersAreUsed(delimiters, capturedValues))
-                throw new UnparseableDataException(Data).UndefinedDelimiter();
+			var delimiters = SplitDelimiters(capturedDelims);
 
-            var values = SplitValuesOnDelimiters(delimiters, capturedValues);
+			if (!OnlyDefinedDelimitersAreUsed(delimiters, capturedValues))
+				throw new UnparseableDataException(Data).UndefinedDelimiter();
 
-            Numbers = ParseToIntegers(values);
-        }
+			var values = SplitValuesOnDelimiters(delimiters, capturedValues);
 
-        private static string[] SplitDelimiters(string capturedDelimiters)
-        {
-            return capturedDelimiters.Split(new[] { "][" }, StringSplitOptions.None);
-        }
+			Numbers = ParseToIntegers(values);
+		}
 
-        private static IEnumerable<string> SplitValuesOnDelimiters(string[] delimiters, string capturedValues)
-        {
-            var delims = new List<string>(delimiters)
+		private static string[] SplitDelimiters(string capturedDelimiters)
+		{
+			return capturedDelimiters.Split(new[] { "][" }, StringSplitOptions.None);
+		}
+
+		private static IEnumerable<string> SplitValuesOnDelimiters(IEnumerable<string> delimiters, string capturedValues)
+		{
+			var delims = new List<string>(delimiters)
             {
                 new string(ConstDelimiter, 1)
             };
-            return capturedValues.Split(delims.ToArray(), StringSplitOptions.None);
-        }
+			return capturedValues.Split(delims.ToArray(), StringSplitOptions.None);
+		}
 
-        private static bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
-        {
-            return RegexPatterns.EnforceValuesDelimitedByDefinedDelimiters(delimiters).Match(delimitedValues).Success;
-        }
-    }
+		private bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
+		{
+			;
+			var capturedDelims = _customDelimSyntaxMatcher.GetCapturedDelimiters();
+
+			foreach (var capturedDelim in capturedDelims)
+			{
+				if (!delimiters.Any(capturedDelim.Equals))
+					return false;
+			}
+			return true;
+		}
+	}
 }
