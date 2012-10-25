@@ -37,6 +37,18 @@ namespace StringCalculator.Unit.Tests
         }
 
         [Test]
+        [TestCase("0\n1", 1)]
+        [TestCase("1,2\n3", 6)]
+        [TestCase("1\n22,333", 356)]
+        [TestCase("1\n22\n333", 356)]
+        public void Comma_and_line_delimited_numbers_returns_the_sum_of_values_less_than_1000(string data, int expectedSum)
+        {
+            var sum = new StringCalculator(data).Sum();
+
+            Assert.That(sum, Is.EqualTo(expectedSum));
+        }
+
+        [Test]
         [TestCase('|', 1)]
         [TestCase('"', 234)]
         public void Custom_char_delimited_single_number_less_than_1000_returns_that_number(char delimiter, int number)
@@ -46,6 +58,16 @@ namespace StringCalculator.Unit.Tests
             var sum = new StringCalculator(data).Sum();
 
             Assert.That(sum, Is.EqualTo(number));
+        }
+
+        [Test]
+        [TestCase("//~\n1~2\n3", 6)]
+        [TestCase("//*\n12\n345*6", 363)]
+        public void Custom_char_and_new_line_delimited_numbers_returns_the_sum_of_values_less_than_1000(string data, int expectedSum)
+        {
+            var sum = new StringCalculator(data).Sum();
+
+            Assert.That(sum, Is.EqualTo(expectedSum));
         }
 
         [Test]

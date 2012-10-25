@@ -12,7 +12,7 @@ namespace StringCalculator
     public class Parser : IParser
     {
         protected readonly string Data;
-        protected const char ConstDelimiter = '\n';
+        public const char ConstDelimiter = '\n';
         public IEnumerable<int> Numbers { get; set; }
 
         public Parser(string data)
@@ -24,7 +24,7 @@ namespace StringCalculator
         {
             if (Data.Equals(string.Empty))
             {
-                Numbers = new[] {0};
+                Numbers = new[] { 0 };
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace StringCalculator
 
         private bool IsCommaDelimited()
         {
-            return RegexPatterns.GetDefinedDelimitersPattern(",").Match(Data).Success;
+            return RegexPatterns.EnforceValuesDelimitedByDefinedDelimiters(',').Match(Data).Success;
         }
 
         private bool IsCustomDelimited()

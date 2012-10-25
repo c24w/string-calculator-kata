@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace StringCalculator
 {
@@ -30,12 +32,16 @@ namespace StringCalculator
 
         private static IEnumerable<string> SplitValuesOnDelimiters(string[] delimiters, string capturedValues)
         {
-            return capturedValues.Split(delimiters, StringSplitOptions.None);
+            var delims = new List<string>(delimiters)
+            {
+                new string(ConstDelimiter, 1)
+            };
+            return capturedValues.Split(delims.ToArray(), StringSplitOptions.None);
         }
 
         private static bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
         {
-            return RegexPatterns.GetDefinedDelimitersPattern(delimiters).Match(delimitedValues).Success;
+            return RegexPatterns.EnforceValuesDelimitedByDefinedDelimiters(delimiters).Match(delimitedValues).Success;
         }
     }
 }
