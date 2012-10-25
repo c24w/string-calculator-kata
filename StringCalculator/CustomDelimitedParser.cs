@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace StringCalculator
@@ -8,52 +9,41 @@ namespace StringCalculator
 	{
 		private readonly CustomDelimitedSyntaxMatcher _customDelimSyntaxMatcher;
 
-		public CustomDelimitedParser(string data, CustomDelimitedSyntaxMatcher customDelimSyntaxMatcher) : base(data)
+		public CustomDelimitedParser(string data, CustomDelimitedSyntaxMatcher customDelimSyntaxMatcher)
+			: base(data)
 		{
 			_customDelimSyntaxMatcher = customDelimSyntaxMatcher;
 		}
 
 		public override void Parse()
 		{
-			var customDelimMatcher = new CustomDelimitedSyntaxMatcher(Data);
-			var capturedDelims = customDelimMatcher.CapturedDelimitersDefinition;
-			var capturedValues = customDelimMatcher.CapturedValues;
+			var delimiters = SplitDelimiters();
 
-			var delimiters = SplitDelimiters(capturedDelims);
-
-			if (!OnlyDefinedDelimitersAreUsed(delimiters, capturedValues))
+			if (!OnlyDefinedDelimitersAreUsed(delimiters))
 				throw new UnparseableDataException(Data).UndefinedDelimiter();
 
-			var values = SplitValuesOnDelimiters(delimiters, capturedValues);
+			var values = SplitValuesOnDelimiters(delimiters);
 
 			Numbers = ParseToIntegers(values);
 		}
 
-		private static string[] SplitDelimiters(string capturedDelimiters)
+		private string[] SplitDelimiters()
 		{
-			return capturedDelimiters.Split(new[] { "][" }, StringSplitOptions.None);
+			var capturedDelimsDef = _customDelimSyntaxMatcher.GetCapturedDelimitersDefinition();
+			return capturedDelimsDef.Split(new[] { "][" }, StringSplitOptions.None);
 		}
 
-		private static IEnumerable<string> SplitValuesOnDelimiters(IEnumerable<string> delimiters, string capturedValues)
+		private IEnumerable<string> SplitValuesOnDelimiters(IEnumerable<string> delimiters)
 		{
-			var delims = new List<string>(delimiters)
-            {
-                new string(ConstDelimiter, 1)
-            };
-			return capturedValues.Split(delims.ToArray(), StringSplitOptions.None);
+			var delims = new List<string>(delimiters) { ConstDelimiter.ToString() }.ToArray();
+			var capturedDelimitedValues = _customDelimSyntaxMatcher.GetCapturedDelimitedValues();
+			return capturedDelimitedValues.Split(delims, StringSplitOptions.None);
 		}
 
-		private bool OnlyDefinedDelimitersAreUsed(string[] delimiters, string delimitedValues)
+		private bool OnlyDefinedDelimitersAreUsed(IEnumerable<string> delimiters)
 		{
-			;
 			var capturedDelims = _customDelimSyntaxMatcher.GetCapturedDelimiters();
-
-			foreach (var capturedDelim in capturedDelims)
-			{
-				if (!delimiters.Any(capturedDelim.Equals))
-					return false;
-			}
-			return true;
+			return capturedDelims.All(delimiters.Contains);
 		}
 	}
 }

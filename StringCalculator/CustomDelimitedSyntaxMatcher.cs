@@ -22,14 +22,14 @@ namespace StringCalculator
 			_match = RegexPatterns.MatchCustomDelimiterSyntax.Match(testSubject);
 		}
 
-		public string CapturedDelimitersDefinition
+		public string GetCapturedDelimitersDefinition()
 		{
-			get { return _match.Groups["delimDef"].Captures[0].Value; }
+			return _match.Groups["delimDef"].Captures[0].Value;
 		}
 
-		public string CapturedValues
+		public string GetCapturedDelimitedValues()
 		{
-			get { return _match.Groups["delimNums"].Captures[0].Value; }
+			return _match.Groups["delimNums"].Captures[0].Value;
 		}
 
 		public IEnumerable<string> GetCapturedDelimiters()
