@@ -29,14 +29,14 @@ namespace StringCalculator
 
 		private string[] SplitDelimiters()
 		{
-			var capturedDelimsDef = _customDelimSyntaxMatcher.GetCapturedDelimitersDefinition();
-			return capturedDelimsDef.Split(new[] { "][" }, StringSplitOptions.None);
+			var capturedDelimsDefinition = _customDelimSyntaxMatcher.GetCapturedDelimitersDefinition();
+			return capturedDelimsDefinition.Split(new[] { "][" }, StringSplitOptions.None);
 		}
 
 		private IEnumerable<string> SplitValuesOnDelimiters(IEnumerable<string> delimiters)
 		{
 			var delims = new List<string>(delimiters) { ConstDelimiter.ToString() }.ToArray();
-			var capturedDelimitedValues = _customDelimSyntaxMatcher.GetCapturedDelimitedValues();
+			var capturedDelimitedValues = _customDelimSyntaxMatcher.GetCapturedDelimitedNumbers();
 			return capturedDelimitedValues.Split(delims, StringSplitOptions.None);
 		}
 
