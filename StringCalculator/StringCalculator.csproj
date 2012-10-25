@@ -39,8 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommaDelimitedParser.cs" />
-    <Compile Include="CustomDelimitedParser.cs" />
+    <Compile Include="CommaDelimiterParser.cs" />
+    <Compile Include="CustomDelimiterParser.cs" />
     <Compile Include="CustomDelimitedSyntaxMatcher.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="RegexPatterns.cs" />

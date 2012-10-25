@@ -43,8 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommaDelimitedTests.cs" />
+    <Compile Include="CustomCharDelimitedTests.cs" />
+    <Compile Include="CustomStringDelimitedTests.cs" />
+    <Compile Include="ExceptionTests.cs" />
+    <Compile Include="MultipleCustomDelimiterTests.cs" />
     <Compile Include="TestDataBuilder.cs" />
-    <Compile Include="StringCalculatorTests.cs" />
+    <Compile Include="UndelimitedDataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

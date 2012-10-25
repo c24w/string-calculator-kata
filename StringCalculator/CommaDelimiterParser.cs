@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace StringCalculator
 {
-    class CommaDelimitedParser : Parser
+    class CommaDelimiterParser : Parser
     {
-        public CommaDelimitedParser(string data) : base(data) { }
+        public CommaDelimiterParser(string data) : base(data) { }
 
         public override void Parse()
         {

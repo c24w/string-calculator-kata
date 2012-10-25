@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace StringCalculator
 {
-	class CustomDelimitedParser : Parser
+	class CustomDelimiterParser : Parser
 	{
 		private readonly CustomDelimitedSyntaxMatcher _customDelimSyntaxMatcher;
 
-		public CustomDelimitedParser(string data, CustomDelimitedSyntaxMatcher customDelimSyntaxMatcher)
+		public CustomDelimiterParser(string data, CustomDelimitedSyntaxMatcher customDelimSyntaxMatcher)
 			: base(data)
 		{
 			_customDelimSyntaxMatcher = customDelimSyntaxMatcher;

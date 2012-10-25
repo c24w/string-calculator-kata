@@ -37,11 +37,11 @@ namespace StringCalculator
 		private Parser SelectParser()
 		{
 			if (IsCommaDelimited())
-				return new CommaDelimitedParser(Data);
+				return new CommaDelimiterParser(Data);
 
 			var customDelimSyntaxMatcher = new CustomDelimitedSyntaxMatcher(Data);
 			if (customDelimSyntaxMatcher.Success)
-				return new CustomDelimitedParser(Data, customDelimSyntaxMatcher);
+				return new CustomDelimiterParser(Data, customDelimSyntaxMatcher);
 
 			throw new UnparseableDataException(Data).InvalidSyntax();
 		}
