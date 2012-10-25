@@ -1,15 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StringCalculator
 {
-	public interface IParser
-	{
-		IEnumerable<int> Numbers { get; set; }
-		void Parse();
-	}
-
-	public class Parser : IParser
+	public class Parser
 	{
 		protected readonly string Data;
 		public const char ConstDelimiter = '\n';
@@ -63,9 +58,16 @@ namespace StringCalculator
 			return numbers.Where(i => i < 0);
 		}
 
-		public static IEnumerable<int> ParseToIntegers(IEnumerable<string> values)
+		public static IEnumerable<int> ParseIntegers(IEnumerable<string> values)
 		{
-			return values.Select(int.Parse).Where(i => i < 1000);
+			try
+			{
+				return values.Select(int.Parse).Where(i => i < 1000);
+			}
+			catch
+			{
+				throw new UnparseableDataException("SHIT THE BED");
+			}
 		}
 	}
 }

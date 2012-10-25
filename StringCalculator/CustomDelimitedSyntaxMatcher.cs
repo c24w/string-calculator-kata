@@ -16,7 +16,7 @@ namespace StringCalculator
 
 		private static readonly string Pattern =
 			string.Format(
-				@"^//((?<{0}>.)|\[(?<{0}>.+?)\])\n(?<{1}>-?\d+(((?<{2}>.+?)|{3})-?\d+)*)$",
+				@"^//((?<{0}>.)|(\[(?<{0}>.+?)\])+)\n(?<{1}>-?\d+(((?<{2}>.+?)|{3})-?\d+)*)$",
 				CaptureGroups.DelimitersDefinition,
 				CaptureGroups.DelimitedNumbers,
 				CaptureGroups.DelimitersUsed,
@@ -43,9 +43,11 @@ namespace StringCalculator
 			_match = Regex.Match(testSubject);
 		}
 
-		public string GetCapturedDelimitersDefinition()
+		public IEnumerable<string> GetCapturedDelimitersDefinition()
 		{
-			return _match.Groups[CaptureGroups.DelimitersDefinition].Captures[0].Value;
+			var delimDef = _match.Groups[CaptureGroups.DelimitersDefinition].Captures;
+			for (var i = 0; i < delimDef.Count; i++)
+				yield return delimDef[i].Value;
 		}
 
 		public string GetCapturedDelimitedNumbers()
@@ -55,9 +57,9 @@ namespace StringCalculator
 
 		public IEnumerable<string> GetCapturedDelimiters()
 		{
-			var delimCaptures = _match.Groups[CaptureGroups.DelimitersUsed].Captures;
-			for(var i = 0; i < delimCaptures.Count; i++)
-				yield return delimCaptures[i].Value;
+			var usedDelims = _match.Groups[CaptureGroups.DelimitersUsed].Captures;
+			for(var i = 0; i < usedDelims.Count; i++)
+				yield return usedDelims[i].Value;
 		}
 	}
 }

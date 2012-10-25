@@ -8,7 +8,7 @@ namespace StringCalculator
 
 		public override void Parse()
 		{
-			Numbers = ParseToIntegers(SplitValues());
+			Numbers = ParseIntegers(SplitValues());
 		}
 
 		private IEnumerable<string> SplitValues()

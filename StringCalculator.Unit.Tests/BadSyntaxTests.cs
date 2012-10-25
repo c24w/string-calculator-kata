@@ -34,6 +34,12 @@ namespace StringCalculator.Unit.Tests
 			var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
 			Assert.That(exception, Is.EqualTo(expectedException));
 		}
+
+		[Test]
+		public void Test()
+		{
+			new StringCalculator("").Sum();
+		}
  
 	}
 }

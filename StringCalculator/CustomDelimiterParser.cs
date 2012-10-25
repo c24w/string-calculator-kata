@@ -16,7 +16,7 @@ namespace StringCalculator
 
 		public override void Parse()
 		{
-			var delimiters = SplitDelimiters();
+			var delimiters = _customDelimSyntaxMatcher.GetCapturedDelimitersDefinition().ToArray();
 
 			var undefinedDelims = GetUndefinedDelimiters(delimiters).ToArray();
 			if (undefinedDelims.Any())
@@ -24,13 +24,7 @@ namespace StringCalculator
 
 			var values = SplitValuesOnDelimiters(delimiters);
 
-			Numbers = ParseToIntegers(values);
-		}
-
-		private string[] SplitDelimiters()
-		{
-			var capturedDelimsDefinition = _customDelimSyntaxMatcher.GetCapturedDelimitersDefinition();
-			return capturedDelimsDefinition.Split(new[] { "][" }, StringSplitOptions.None);
+			Numbers = ParseIntegers(values);
 		}
 
 		private IEnumerable<string> SplitValuesOnDelimiters(IEnumerable<string> delimiters)
