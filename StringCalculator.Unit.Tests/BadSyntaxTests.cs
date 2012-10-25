@@ -3,7 +3,7 @@
 namespace StringCalculator.Unit.Tests
 {
 	[TestFixture]
-	public class ExceptionTests
+	public class BadSyntaxTests
 	{
 		[Test]
 		[TestCase("//#\n1~2", "~")]
@@ -13,7 +13,7 @@ namespace StringCalculator.Unit.Tests
 		[TestCase("//$\n1\n2£3", "£")]
 		public void Exception_is_thrown_when_an_undefined_custom_delimiter_is_used(string data, string undefinedDelimiter)
 		{
-			var expectedException = new UnparseableDataException(data).UndefinedDelimiter();
+			var expectedException = new UnparseableDataException(data).UndefinedDelimiters(undefinedDelimiter);
 			var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
 			Assert.That(exception, Is.EqualTo(expectedException));
 		}

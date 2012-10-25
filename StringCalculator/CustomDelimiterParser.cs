@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace StringCalculator
@@ -19,8 +18,9 @@ namespace StringCalculator
 		{
 			var delimiters = SplitDelimiters();
 
-			if (!OnlyDefinedDelimitersAreUsed(delimiters))
-				throw new UnparseableDataException(Data).UndefinedDelimiter();
+			var undefinedDelims = GetUndefinedDelimiters(delimiters).ToArray();
+			if (undefinedDelims.Any())
+				throw new UnparseableDataException(Data).UndefinedDelimiters(undefinedDelims);
 
 			var values = SplitValuesOnDelimiters(delimiters);
 
@@ -40,10 +40,10 @@ namespace StringCalculator
 			return capturedDelimitedValues.Split(delims, StringSplitOptions.None);
 		}
 
-		private bool OnlyDefinedDelimitersAreUsed(IEnumerable<string> delimiters)
+		private IEnumerable<string> GetUndefinedDelimiters(IEnumerable<string> definedDelimiters)
 		{
-			var capturedDelims = _customDelimSyntaxMatcher.GetCapturedDelimiters();
-			return capturedDelims.All(delimiters.Contains);
+			var usedDelimiters = _customDelimSyntaxMatcher.GetCapturedDelimiters();
+			return usedDelimiters.Where(d => !definedDelimiters.Contains(d));
 		}
 	}
 }

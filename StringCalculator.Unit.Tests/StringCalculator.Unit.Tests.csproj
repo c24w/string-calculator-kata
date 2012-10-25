@@ -46,7 +46,7 @@
     <Compile Include="CommaDelimitedTests.cs" />
     <Compile Include="CustomCharDelimitedTests.cs" />
     <Compile Include="CustomStringDelimitedTests.cs" />
-    <Compile Include="ExceptionTests.cs" />
+    <Compile Include="BadSyntaxTests.cs" />
     <Compile Include="MultipleCustomDelimiterTests.cs" />
     <Compile Include="TestDataBuilder.cs" />
     <Compile Include="UndelimitedDataTests.cs" />

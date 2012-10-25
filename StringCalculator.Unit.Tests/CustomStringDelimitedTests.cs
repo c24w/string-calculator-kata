@@ -54,7 +54,7 @@ namespace StringCalculator.Unit.Tests
 		public void Custom_string_delimited_data_containing_negative_numbers_throws_an_exception(params int[] numbers)
 		{
 			var data = TestDataBuilder.GetStringDelimitedData(":;", numbers);
-			var negatives = numbers.Where(i => i < 0);
+			var negatives = numbers.Where(i => i < 0).ToArray();
 			var expectedException = new UnparseableDataException(data).ContainsNegatives(negatives);
 
 			var exception = Assert.Throws<UnparseableDataException>(() => new StringCalculator(data).Sum());
