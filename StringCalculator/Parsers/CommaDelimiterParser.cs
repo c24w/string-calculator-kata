@@ -1,20 +1,14 @@
-using StringCalculator.PatternMatching;
+using StringCalculator.DataContainers;
 
 namespace StringCalculator.Parsers
 {
 	class CommaDelimiterParser : Parser
 	{
-		private readonly CapturedData _capturedData;
-
-		public CommaDelimiterParser(string rawData, CapturedData capturedData)
-			: base(rawData)
-		{
-			_capturedData = capturedData;
-		}
+		public CommaDelimiterParser(string rawData, CapturedData capturedData) : base(rawData, capturedData) { }
 
 		public override void Parse()
 		{
-			Numbers = ParseIntegers(_capturedData.Numbers);
+			Numbers = ParseIntegers(CapturedData.Numbers);
 		}
 	}
 }

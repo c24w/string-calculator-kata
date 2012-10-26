@@ -1,12 +1,10 @@
-using System.Text.RegularExpressions;
+using StringCalculator.DataContainers;
 using StringCalculator.Parsers;
 
 namespace StringCalculator.PatternMatching
 {
-	class CustomDelimiterPatternMatcher : IPatternMatcher
+	class CustomDelimiterPatternMatcher : PatternMatcher
 	{
-
-
 		/*   capture 1 char | >=1 char(s) in []     capture int(s) (length >=1) (possibly negative) delimited by char(s) (length >=1)
 		/*   note: .+? = lazy, i.e. won't consume the subsequent ] or subsequent -  */
 		private static readonly string Pattern = string.Format(
@@ -17,22 +15,11 @@ namespace StringCalculator.PatternMatching
 			Parser.UniversalDelimiter
 		);
 
-		private readonly Regex _regex = new Regex(Pattern, RegexOptions.Compiled);
-		private readonly Match _match;
+		public CustomDelimiterPatternMatcher(string data) : base(data, Pattern) { }
 
-		public CustomDelimiterPatternMatcher(string testSubject)
+		public override CapturedData GetCapturedData()
 		{
-			_match = _regex.Match(testSubject);
-		}
-
-		public bool Success
-		{
-			get { return _match.Success; }
-		}
-
-		public CapturedData GetCapturedData()
-		{
-			return new CapturedData(_match.Groups);
+			return new CustomDelimiterCapturedData(_match.Groups);
 		}
 	}
 }
