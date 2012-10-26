@@ -1,6 +1,6 @@
 namespace StringCalculator
 {
-	public interface ISyntaxMatcher
+	public interface IPatternMatcher
 	{
 			bool Success { get; }
 	}

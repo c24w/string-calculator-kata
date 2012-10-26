@@ -6,17 +6,17 @@ namespace StringCalculator
 {
 	class CustomDelimiterParser : Parser
 	{
-		private readonly CustomDelimiterSyntaxMatcher _customDelimSyntaxMatcher;
+		private readonly CustomDelimiterPatternMatcher _customDelimPatternMatcher;
 
-		public CustomDelimiterParser(string data, CustomDelimiterSyntaxMatcher customDelimSyntaxMatcher)
+		public CustomDelimiterParser(string data, CustomDelimiterPatternMatcher customDelimPatternMatcher)
 			: base(data)
 		{
-			_customDelimSyntaxMatcher = customDelimSyntaxMatcher;
+			_customDelimPatternMatcher = customDelimPatternMatcher;
 		}
 
 		public override void Parse()
 		{
-			var delimiters = _customDelimSyntaxMatcher.GetCapturedDelimitersDefinition().ToArray();
+			var delimiters = _customDelimPatternMatcher.GetCapturedDelimitersDefinition().ToArray();
 
 			var undefinedDelims = GetUndefinedDelimiters(delimiters).ToArray();
 			if (undefinedDelims.Any())
@@ -30,13 +30,13 @@ namespace StringCalculator
 		private IEnumerable<string> SplitValuesOnDelimiters(IEnumerable<string> delimiters)
 		{
 			var delims = new List<string>(delimiters) { ConstDelimiter.ToString() }.ToArray();
-			var capturedDelimitedValues = _customDelimSyntaxMatcher.GetCapturedDelimitedNumbers();
+			var capturedDelimitedValues = _customDelimPatternMatcher.GetCapturedDelimitedNumbers();
 			return capturedDelimitedValues.Split(delims, StringSplitOptions.None);
 		}
 
 		private IEnumerable<string> GetUndefinedDelimiters(IEnumerable<string> definedDelimiters)
 		{
-			var usedDelimiters = _customDelimSyntaxMatcher.GetCapturedDelimiters();
+			var usedDelimiters = _customDelimPatternMatcher.GetCapturedDelimiters();
 			return usedDelimiters.Where(d => !definedDelimiters.Contains(d));
 		}
 	}

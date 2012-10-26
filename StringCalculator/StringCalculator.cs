@@ -13,7 +13,7 @@ namespace StringCalculator
 
 		public int Sum()
 		{
-			var parser = new Parser(_data);
+			var parser = new BaseParser(_data);
 			parser.Parse();
 			return parser.Numbers.Sum();
 		}
