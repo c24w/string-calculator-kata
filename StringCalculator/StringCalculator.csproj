@@ -42,8 +42,6 @@
     <Compile Include="DataContainers\CapturedData.cs" />
     <Compile Include="DataContainers\CommaDelimiterCapturedData.cs" />
     <Compile Include="DataContainers\CustomDelimiterCapturedData.cs" />
-    <Compile Include="INumberValidator.cs" />
-    <Compile Include="DefaultNumberValidator.cs" />
     <Compile Include="Parsers\CommaDelimiterParser.cs" />
     <Compile Include="Parsers\CustomDelimiterParser.cs" />
     <Compile Include="Parsers\CalculatorDataParser.cs" />
@@ -55,6 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringCalculator.cs" />
     <Compile Include="UnparseableDataException.cs" />
+    <Compile Include="Validation\CapturedDataValidator.cs" />
+    <Compile Include="Validation\DefaultNumberValidator.cs" />
+    <Compile Include="Validation\ICapturedDataValidator.cs" />
+    <Compile Include="Validation\INumberValidator.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

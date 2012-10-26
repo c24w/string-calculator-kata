@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
-namespace StringCalculator
+namespace StringCalculator.Validation
 {
 	public interface INumberValidator
 	{
-		void Validate(string data, IEnumerable<int> numbers);
+		void Validate(IEnumerable<int> numbers);
 	}
 }

@@ -4,7 +4,7 @@ namespace StringCalculator.DataContainers
 {
 	public class CustomDelimiterCapturedData : CapturedData
 	{
-		public CustomDelimiterCapturedData(GroupCollection matchGroups) : base(matchGroups) { }
+		public CustomDelimiterCapturedData(GroupCollection regexMatchGroups) : base(regexMatchGroups) { }
 		
 	}
 }

@@ -6,16 +6,16 @@ namespace StringCalculator.DataContainers
 {
 	public class CapturedData
 	{
-		protected readonly GroupCollection MatchGroups;
+		protected readonly GroupCollection RegexMatchGroups;
 
-		public CapturedData(GroupCollection matchGroups)
+		public CapturedData(GroupCollection regexMatchGroups)
 		{
-			MatchGroups = matchGroups;
+			RegexMatchGroups = regexMatchGroups;
 		}
 
 		protected IEnumerable<string> GetCapturedValues(CaptureGroups captureGroup)
 		{
-			var captureCollection = MatchGroups[captureGroup.ToString()].Captures;
+			var captureCollection = RegexMatchGroups[captureGroup.ToString()].Captures;
 			for (var i = 0; i < captureCollection.Count; i++)
 				yield return captureCollection[i].Value;
 		}

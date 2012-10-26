@@ -5,7 +5,7 @@ namespace StringCalculator.DataContainers
 {
 	public abstract class CommaDelimiterCapturedData : CapturedData
 	{
-		protected CommaDelimiterCapturedData(GroupCollection matchGroups) : base(matchGroups) { }
+		protected CommaDelimiterCapturedData(GroupCollection regexMatchGroups) : base(regexMatchGroups) { }
 
 		public override IEnumerable<string> DefinedDelimiters
 		{

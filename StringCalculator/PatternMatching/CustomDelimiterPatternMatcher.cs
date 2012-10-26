@@ -1,4 +1,3 @@
-using StringCalculator.DataContainers;
 using StringCalculator.Parsers;
 
 namespace StringCalculator.PatternMatching
@@ -16,10 +15,5 @@ namespace StringCalculator.PatternMatching
 		);
 
 		public CustomDelimiterPatternMatcher(string data) : base(data, Pattern) { }
-
-		public override CapturedData GetCapturedData()
-		{
-			return new CustomDelimiterCapturedData(_match.Groups);
-		}
 	}
 }

@@ -1,4 +1,5 @@
 using StringCalculator.PatternMatching;
+using StringCalculator.Validation;
 
 namespace StringCalculator.Parsers
 {
@@ -6,7 +7,7 @@ namespace StringCalculator.Parsers
 	{
 		private readonly INumberValidator _numberValidator;
 
-		public CalculatorDataParser(string data) : this(data, new DefaultNumberValidator()) { }
+		public CalculatorDataParser(string data) : this(data, new DefaultNumberValidator(data)) { }
 
 		public CalculatorDataParser(string data, INumberValidator numberValidator)
 			: base(data)
@@ -25,7 +26,7 @@ namespace StringCalculator.Parsers
 			var parser = SelectParser();
 			parser.Parse();
 			Numbers = parser.Numbers;
-			_numberValidator.Validate(Data, Numbers);
+			_numberValidator.Validate(Numbers);
 		}
 
 		private Parser SelectParser()
