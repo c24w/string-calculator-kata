@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+
 namespace StringCalculator.PatternMatching
 {
 	public interface IPatternMatcher
 	{
-			bool Success { get; }
+		bool Success { get; }
+		CapturedData GetCapturedData();
 	}
 }

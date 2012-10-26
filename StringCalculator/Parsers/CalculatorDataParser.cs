@@ -32,11 +32,11 @@ namespace StringCalculator.Parsers
 		{
 			var commaDelimSyntaxMatcher = new CommaDelimiterPatternMatcher(Data);
 			if (commaDelimSyntaxMatcher.Success)
-				return new CommaDelimiterParser(Data, commaDelimSyntaxMatcher);
+				return new CommaDelimiterParser(Data, commaDelimSyntaxMatcher.GetCapturedData());
 
 			var customDelimSyntaxMatcher = new CustomDelimiterPatternMatcher(Data);
 			if (customDelimSyntaxMatcher.Success)
-				return new CustomDelimiterParser(Data, customDelimSyntaxMatcher);
+				return new CustomDelimiterParser(Data, customDelimSyntaxMatcher.GetCapturedData());
 
 			throw new UnparseableDataException(Data).InvalidSyntax();
 		}

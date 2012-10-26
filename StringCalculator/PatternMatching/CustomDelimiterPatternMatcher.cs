@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using StringCalculator.Parsers;
 
@@ -6,12 +5,7 @@ namespace StringCalculator.PatternMatching
 {
 	class CustomDelimiterPatternMatcher : IPatternMatcher
 	{
-		private struct CaptureGroups
-		{
-			public const string DelimitersDefinition = "delimsDef";
-			public const string Numbers = "nums";
-			public const string DelimitersUsed = "delimsUsed";
-		}
+
 
 		/*   capture 1 char | >=1 char(s) in []     capture int(s) (length >=1) (possibly negative) delimited by char(s) (length >=1)
 		/*   note: .+? = lazy, i.e. won't consume the subsequent ] or subsequent -  */
@@ -36,26 +30,9 @@ namespace StringCalculator.PatternMatching
 			get { return _match.Success; }
 		}
 
-		public IEnumerable<string> GetCapturedDefinedDelimiters()
+		public CapturedData GetCapturedData()
 		{
-			return GetCapturedValues(CaptureGroups.DelimitersDefinition);
-		}
-
-		public IEnumerable<string> GetCapturedUsedDelimiters()
-		{
-			return GetCapturedValues(CaptureGroups.DelimitersUsed);
-		}
-
-		public IEnumerable<string> GetCapturedNumbers()
-		{
-			return GetCapturedValues(CaptureGroups.Numbers);
-		}
-
-		public IEnumerable<string> GetCapturedValues(string captureGroup)
-		{
-			var captureCollection = _match.Groups[captureGroup].Captures;
-			for (var i = 0; i < captureCollection.Count; i++)
-				yield return captureCollection[i].Value;
+			return new CapturedData(_match.Groups);
 		}
 	}
 }

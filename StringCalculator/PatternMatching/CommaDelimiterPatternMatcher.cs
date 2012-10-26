@@ -6,15 +6,13 @@ namespace StringCalculator.PatternMatching
 {
 	public class CommaDelimiterPatternMatcher : IPatternMatcher
 	{
-		private const string NumbersCaptureGroup = "nums";
-
 		private static readonly string DelimPattern = string.Format(
 			"({0}|{1})", ',', Parser.UniversalDelimiter
 		);
 
 		private static readonly string Pattern = string.Format(
 			@"^(?<{0}>-?\d+)({1}(?<{0}>-?\d+))*$",
-			NumbersCaptureGroup,
+			CaptureGroups.Numbers,
 			DelimPattern
 		);
 
@@ -31,16 +29,9 @@ namespace StringCalculator.PatternMatching
 			get { return _match.Success; }
 		}
 
-		public IEnumerable<string> GetCapturedNumbers()
+		public CapturedData GetCapturedData()
 		{
-			return GetCapturedValues(NumbersCaptureGroup);
-		}
-
-		public IEnumerable<string> GetCapturedValues(string captureGroup)
-		{
-			var captureCollection = _match.Groups[captureGroup].Captures;
-			for (var i = 0; i < captureCollection.Count; i++)
-				yield return captureCollection[i].Value;
+			return new CapturedData(_match.Groups);
 		}
 	}
 }

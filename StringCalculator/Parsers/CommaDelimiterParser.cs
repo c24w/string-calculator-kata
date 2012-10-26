@@ -1,21 +1,20 @@
-using System.Collections.Generic;
 using StringCalculator.PatternMatching;
 
 namespace StringCalculator.Parsers
 {
 	class CommaDelimiterParser : Parser
 	{
-		private readonly CommaDelimiterPatternMatcher _commaDelimPatternMatcher;
+		private readonly CapturedData _capturedData;
 
-		public CommaDelimiterParser(string data, CommaDelimiterPatternMatcher commaDelimPatternMatcher)
-			: base(data)
+		public CommaDelimiterParser(string rawData, CapturedData capturedData)
+			: base(rawData)
 		{
-			_commaDelimPatternMatcher = commaDelimPatternMatcher;
+			_capturedData = capturedData;
 		}
 
 		public override void Parse()
 		{
-			Numbers = ParseIntegers(_commaDelimPatternMatcher.GetCapturedNumbers());
+			Numbers = ParseIntegers(_capturedData.Numbers);
 		}
 	}
 }
