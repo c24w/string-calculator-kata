@@ -8,17 +8,17 @@ namespace StringCalculator.PatternMatching
 	{
 		private struct CaptureGroups
 		{
-			public const string DelimitersDefinition = "delimDef";
-			public const string DelimitedNumbers = "delimNums";
-			public const string DelimitersUsed = "delims";
+			public const string DelimitersDefinition = "delimsDef";
+			public const string Numbers = "nums";
+			public const string DelimitersUsed = "delimsUsed";
 		}
 
 		/*   capture 1 char | >=1 char(s) in []     capture int(s) (length >=1) (possibly negative) delimited by char(s) (length >=1)
 		/*   note: .+? = lazy, i.e. won't consume the subsequent ] or subsequent -  */
 		private static readonly string Pattern = string.Format(
-			@"^//((?<{0}>.)|(\[(?<{0}>.+?)\])+)\n(?<{1}>-?\d+(((?<{2}>.+?)|{3})-?\d+)*)$",
+			@"^//((?<{0}>.)|(\[(?<{0}>.+?)\])+)\n(?<{1}>-?\d+)(((?<{2}>.+?)|{3})(?<{1}>-?\d+))*$",
 			CaptureGroups.DelimitersDefinition,
-			CaptureGroups.DelimitedNumbers,
+			CaptureGroups.Numbers,
 			CaptureGroups.DelimitersUsed,
 			Parser.UniversalDelimiter
 		);
@@ -46,9 +46,9 @@ namespace StringCalculator.PatternMatching
 			return GetCapturedValues(CaptureGroups.DelimitersUsed);
 		}
 
-		public string GetCapturedDelimitedNumbers()
+		public IEnumerable<string> GetCapturedNumbers()
 		{
-			return _match.Groups[CaptureGroups.DelimitedNumbers].Captures[0].Value;
+			return GetCapturedValues(CaptureGroups.Numbers);
 		}
 
 		public IEnumerable<string> GetCapturedValues(string captureGroup)

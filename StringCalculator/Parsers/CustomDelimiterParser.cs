@@ -20,23 +20,14 @@ namespace StringCalculator.Parsers
 		{
 			var definedDelims = _customDelimPatternMatcher.GetCapturedDefinedDelimiters().ToArray();
 			CheckForUndefinedDelimiters(definedDelims);
-			var numbers = SplitNumbersOnDelimiters(definedDelims);
+			var numbers = _customDelimPatternMatcher.GetCapturedNumbers();
 			Numbers = ParseIntegers(numbers);
-		}
-
-		private IEnumerable<string> SplitNumbersOnDelimiters(IEnumerable<string> delimiters)
-		{
-			delimiters = new List<string>(delimiters) { new string(UniversalDelimiter, 1) }.ToArray();
-			var capturedNums = _customDelimPatternMatcher.GetCapturedDelimitedNumbers();
-			return capturedNums.Split(delimiters.ToArray(), StringSplitOptions.None);
 		}
 
 		private void CheckForUndefinedDelimiters(IEnumerable<string> definedDelimiters)
 		{
 			var usedDelims = _customDelimPatternMatcher.GetCapturedUsedDelimiters();
-
 			var undefinedDelims = usedDelims.Where(d => !definedDelimiters.Contains(d)).ToArray();
-
 			if (undefinedDelims.Any())
 				throw new UnparseableDataException(Data).UndefinedDelimiters(undefinedDelims);
 		}
