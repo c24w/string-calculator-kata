@@ -31,42 +31,28 @@ namespace StringCalculator.Parsers
 
 		private DelimiterParser DetermineParserAndParse(string data)
 		{
-			/*
-			var patternParserPairs = new Dictionary<PatternMatcher, Parser>
+			var patternMatchers = new List<PatternMatcher>
 			{
-				{new CommaDelimiterPatternMatcher(Data), new CommaDelimiterParser(Data)},
-				{new CustomDelimiterPatternMatcher(Data), new CustomDelimiterParser(Data)}
+				new CommaDelimiterPatternMatcher(),
+				new CustomDelimiterPatternMatcher()
 			};
 
-			foreach (var patternParserPair in patternParserPairs)
+			var delimiterParsers = new List<DelimiterParser>
 			{
-				var patternMatcher = patternParserPair.Key;
+				new CommaDelimiterParser(),
+				new CustomDelimiterParser()
+			};
+
+			foreach (var patternMatcher in patternMatchers)
+			{
+				patternMatcher.ExecuteMatch(data);
 				if (patternMatcher.Success)
 				{
-					var parser = patternParserPair.Value;
-					parser.SetCapturedData(patternMatcher.GetCapturedData());
+					var parser = delimiterParsers[patternMatchers.IndexOf(patternMatcher)];
+					parser.Parse(data, patternMatcher.GetCapturedData());
 					return parser;
 				}
 			}
-			throw new UnparseableDataException(Data).InvalidSyntax();
-			 */
-
-			var commaDelimSyntaxMatcher = new CommaDelimiterPatternMatcher(data);
-			if (commaDelimSyntaxMatcher.Success)
-			{
-				var parser = new CommaDelimiterParser();
-				parser.Parse(data, commaDelimSyntaxMatcher.GetCapturedData());
-				return parser;
-			}
-
-			var customDelimSyntaxMatcher = new CustomDelimiterPatternMatcher(data);
-			if (customDelimSyntaxMatcher.Success)
-			{
-				var parser = new CustomDelimiterParser();
-				parser.Parse(data, customDelimSyntaxMatcher.GetCapturedData());
-				return parser;
-			}
-
 			throw new UnparseableDataException(data).InvalidSyntax();
 		}
 	}

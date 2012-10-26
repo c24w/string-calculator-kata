@@ -5,13 +5,15 @@ namespace StringCalculator.PatternMatching
 {
 	public abstract class PatternMatcher
 	{
-		protected readonly Match Match;
+		protected Match Match;
 
-		protected PatternMatcher(string data, string pattern)
+		public void ApplyPatternToData(string data, string pattern)
 		{
 			var regex = new Regex(pattern, RegexOptions.Compiled);
 			Match = regex.Match(data);
 		}
+
+		public abstract void ExecuteMatch(string data);
 
 		public bool Success
 		{

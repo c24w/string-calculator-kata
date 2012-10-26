@@ -14,6 +14,9 @@ namespace StringCalculator.PatternMatching
 			DelimPattern
 		);
 
-		public CommaDelimiterPatternMatcher(string data) : base(data, Pattern) { }
+		public override void ExecuteMatch(string data)
+		{
+			ApplyPatternToData(data, Pattern);
+		}
 	}
 }
