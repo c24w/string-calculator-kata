@@ -4,16 +4,16 @@ namespace StringCalculator
 {
 	class CommaDelimiterParser : Parser
 	{
-		public CommaDelimiterParser(string data) : base(data) { }
+		private readonly CommaDelimiterSyntaxMatcher _commaDelimSyntaxMatcher;
+
+		public CommaDelimiterParser(string data, CommaDelimiterSyntaxMatcher commaDelimSyntaxMatcher) : base(data)
+		{
+			_commaDelimSyntaxMatcher = commaDelimSyntaxMatcher;
+		}
 
 		public override void Parse()
 		{
-			Numbers = ParseIntegers(SplitValues());
-		}
-
-		private IEnumerable<string> SplitValues()
-		{
-			return Data.Split(new[] { ',', ConstDelimiter });
+			Numbers = ParseIntegers(_commaDelimSyntaxMatcher.GetCapturedNumbers());
 		}
 	}
 }

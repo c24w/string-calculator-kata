@@ -7,7 +7,7 @@ namespace StringCalculator
 	{
 		protected readonly string Data;
 		public const char ConstDelimiter = '\n';
-		public IEnumerable<int> Numbers { get; set; }
+		public IEnumerable<int> Numbers { get; protected set; }
 
 		public Parser(string data)
 		{
@@ -32,7 +32,7 @@ namespace StringCalculator
 		{
 			var commaDelimSyntaxMatcher = new CommaDelimiterSyntaxMatcher(Data);
 			if (commaDelimSyntaxMatcher.Success)
-				return new CommaDelimiterParser(Data);
+				return new CommaDelimiterParser(Data, commaDelimSyntaxMatcher);
 
 			var customDelimSyntaxMatcher = new CustomDelimiterSyntaxMatcher(Data);
 			if (customDelimSyntaxMatcher.Success)
