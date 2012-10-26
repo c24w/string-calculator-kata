@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,48 +25,25 @@ namespace StringCalculator
 			var parser = SelectParser();
 			parser.Parse();
 			Numbers = parser.Numbers;
-			ValidateParsedNumbers(Numbers);
+			new NumberValidator(Data, Numbers).Validate();
 		}
 
 		private Parser SelectParser()
 		{
-			if (IsCommaDelimited())
+			var commaDelimSyntaxMatcher = new CommaDelimiterSyntaxMatcher(Data);
+			if (commaDelimSyntaxMatcher.Success)
 				return new CommaDelimiterParser(Data);
 
-			var customDelimSyntaxMatcher = new CustomDelimitedSyntaxMatcher(Data);
+			var customDelimSyntaxMatcher = new CustomDelimiterSyntaxMatcher(Data);
 			if (customDelimSyntaxMatcher.Success)
 				return new CustomDelimiterParser(Data, customDelimSyntaxMatcher);
 
 			throw new UnparseableDataException(Data).InvalidSyntax();
 		}
 
-		private bool IsCommaDelimited()
-		{
-			return RegexPatterns.MatchCommaDelimited().Match(Data).Success;
-		}
-
-		public void ValidateParsedNumbers(IEnumerable<int> numbers)
-		{
-			var negatives = GetNegativeValues(numbers).ToArray();
-			if (negatives.Any())
-				throw new UnparseableDataException(Data).ContainsNegatives(negatives);
-		}
-
-		private static IEnumerable<int> GetNegativeValues(IEnumerable<int> numbers)
-		{
-			return numbers.Where(i => i < 0);
-		}
-
 		public static IEnumerable<int> ParseIntegers(IEnumerable<string> values)
 		{
-			try
-			{
-				return values.Select(int.Parse).Where(i => i < 1000);
-			}
-			catch
-			{
-				throw new UnparseableDataException("SHIT THE BED");
-			}
+			return values.Select(int.Parse).Where(i => i < 1000);
 		}
 	}
 }

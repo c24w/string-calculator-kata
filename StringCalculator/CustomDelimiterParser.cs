@@ -6,9 +6,9 @@ namespace StringCalculator
 {
 	class CustomDelimiterParser : Parser
 	{
-		private readonly CustomDelimitedSyntaxMatcher _customDelimSyntaxMatcher;
+		private readonly CustomDelimiterSyntaxMatcher _customDelimSyntaxMatcher;
 
-		public CustomDelimiterParser(string data, CustomDelimitedSyntaxMatcher customDelimSyntaxMatcher)
+		public CustomDelimiterParser(string data, CustomDelimiterSyntaxMatcher customDelimSyntaxMatcher)
 			: base(data)
 		{
 			_customDelimSyntaxMatcher = customDelimSyntaxMatcher;

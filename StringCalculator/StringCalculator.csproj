@@ -41,9 +41,11 @@
   <ItemGroup>
     <Compile Include="CommaDelimiterParser.cs" />
     <Compile Include="CustomDelimiterParser.cs" />
-    <Compile Include="CustomDelimitedSyntaxMatcher.cs" />
+    <Compile Include="CustomDelimiterSyntaxMatcher.cs" />
+    <Compile Include="ISyntaxMatcher.cs" />
+    <Compile Include="NumberValidator.cs" />
     <Compile Include="Parser.cs" />
-    <Compile Include="RegexPatterns.cs" />
+    <Compile Include="CommaDelimiterSyntaxMatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringCalculator.cs" />
     <Compile Include="UnparseableDataException.cs" />
