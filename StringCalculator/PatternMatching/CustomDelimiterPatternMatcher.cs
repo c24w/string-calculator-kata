@@ -20,7 +20,7 @@ namespace StringCalculator.PatternMatching
 			CaptureGroups.DelimitersDefinition,
 			CaptureGroups.DelimitedNumbers,
 			CaptureGroups.DelimitersUsed,
-			TopParser.ConstDelimiter
+			Parser.UniversalDelimiter
 		);
 
 		private readonly Regex _regex = new Regex(Pattern, RegexOptions.Compiled);
@@ -36,12 +36,12 @@ namespace StringCalculator.PatternMatching
 			get { return _match.Success; }
 		}
 
-		public IEnumerable<string> GetCapturedDelimitersDefinition()
+		public IEnumerable<string> GetCapturedDefinedDelimiters()
 		{
 			return GetCapturedValues(CaptureGroups.DelimitersDefinition);
 		}
 
-		public IEnumerable<string> GetCapturedDelimiters()
+		public IEnumerable<string> GetCapturedUsedDelimiters()
 		{
 			return GetCapturedValues(CaptureGroups.DelimitersUsed);
 		}

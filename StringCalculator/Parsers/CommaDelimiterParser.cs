@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using StringCalculator.PatternMatching;
 
 namespace StringCalculator.Parsers
@@ -6,7 +7,8 @@ namespace StringCalculator.Parsers
 	{
 		private readonly CommaDelimiterPatternMatcher _commaDelimPatternMatcher;
 
-		public CommaDelimiterParser(string data, CommaDelimiterPatternMatcher commaDelimPatternMatcher) : base(data)
+		public CommaDelimiterParser(string data, CommaDelimiterPatternMatcher commaDelimPatternMatcher)
+			: base(data)
 		{
 			_commaDelimPatternMatcher = commaDelimPatternMatcher;
 		}

@@ -2,13 +2,13 @@ using StringCalculator.PatternMatching;
 
 namespace StringCalculator.Parsers
 {
-	public class TopParser : Parser
+	public class CalculatorDataParser : Parser
 	{
 		private readonly INumberValidator _numberValidator;
 
-		public TopParser(string data) : this(data, new DefaultNumberValidator()) { }
+		public CalculatorDataParser(string data) : this(data, new DefaultNumberValidator()) { }
 
-		public TopParser(string data, INumberValidator numberValidator)
+		public CalculatorDataParser(string data, INumberValidator numberValidator)
 			: base(data)
 		{
 			_numberValidator = numberValidator;

@@ -40,11 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="INumberValidator.cs" />
-    <Compile Include="Parser.cs" />
     <Compile Include="DefaultNumberValidator.cs" />
     <Compile Include="Parsers\CommaDelimiterParser.cs" />
     <Compile Include="Parsers\CustomDelimiterParser.cs" />
-    <Compile Include="Parsers\TopParser.cs" />
+    <Compile Include="Parsers\CalculatorDataParser.cs" />
+    <Compile Include="Parsers\Parser.cs" />
     <Compile Include="PatternMatching\CommaDelimiterPatternMatcher.cs" />
     <Compile Include="PatternMatching\CustomDelimiterPatternMatcher.cs" />
     <Compile Include="PatternMatching\IPatternMatcher.cs" />

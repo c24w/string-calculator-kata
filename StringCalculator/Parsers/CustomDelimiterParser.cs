@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using StringCalculator.PatternMatching;
 
@@ -17,28 +18,27 @@ namespace StringCalculator.Parsers
 
 		public override void Parse()
 		{
-			var delimiters = _customDelimPatternMatcher.GetCapturedDelimitersDefinition().ToArray();
+			var definedDelims = _customDelimPatternMatcher.GetCapturedDefinedDelimiters().ToArray();
+			CheckForUndefinedDelimiters(definedDelims);
+			var numbers = SplitNumbersOnDelimiters(definedDelims);
+			Numbers = ParseIntegers(numbers);
+		}
 
-			var undefinedDelims = GetUndefinedDelimiters(delimiters).ToArray();
+		private IEnumerable<string> SplitNumbersOnDelimiters(IEnumerable<string> delimiters)
+		{
+			delimiters = new List<string>(delimiters) { new string(UniversalDelimiter, 1) }.ToArray();
+			var capturedNums = _customDelimPatternMatcher.GetCapturedDelimitedNumbers();
+			return capturedNums.Split(delimiters.ToArray(), StringSplitOptions.None);
+		}
+
+		private void CheckForUndefinedDelimiters(IEnumerable<string> definedDelimiters)
+		{
+			var usedDelims = _customDelimPatternMatcher.GetCapturedUsedDelimiters();
+
+			var undefinedDelims = usedDelims.Where(d => !definedDelimiters.Contains(d)).ToArray();
+
 			if (undefinedDelims.Any())
 				throw new UnparseableDataException(Data).UndefinedDelimiters(undefinedDelims);
-
-			var values = SplitValuesOnDelimiters(delimiters);
-
-			Numbers = ParseIntegers(values);
-		}
-
-		private IEnumerable<string> SplitValuesOnDelimiters(IEnumerable<string> delimiters)
-		{
-			var delims = new List<string>(delimiters) { ConstDelimiter.ToString() }.ToArray();
-			var capturedDelimitedValues = _customDelimPatternMatcher.GetCapturedDelimitedNumbers();
-			return capturedDelimitedValues.Split(delims, StringSplitOptions.None);
-		}
-
-		private IEnumerable<string> GetUndefinedDelimiters(IEnumerable<string> definedDelimiters)
-		{
-			var usedDelimiters = _customDelimPatternMatcher.GetCapturedDelimiters();
-			return usedDelimiters.Where(d => !definedDelimiters.Contains(d));
 		}
 	}
 }

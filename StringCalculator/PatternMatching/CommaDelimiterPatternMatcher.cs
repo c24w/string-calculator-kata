@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using StringCalculator.Parsers;
 
 namespace StringCalculator.PatternMatching
 {
@@ -8,7 +9,7 @@ namespace StringCalculator.PatternMatching
 		private const string NumbersCaptureGroup = "nums";
 
 		private static readonly string DelimPattern = string.Format(
-			"({0}|{1})", ',', Parser.ConstDelimiter
+			"({0}|{1})", ',', Parser.UniversalDelimiter
 		);
 
 		private static readonly string Pattern = string.Format(

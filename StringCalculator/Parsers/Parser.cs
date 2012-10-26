@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace StringCalculator
+namespace StringCalculator.Parsers
 {
 	public abstract class Parser
 	{
 		protected readonly string Data;
-		public const char ConstDelimiter = '\n';
+		public const char UniversalDelimiter = '\n';
 		public IEnumerable<int> Numbers { get; protected set; }
 
 		protected Parser(string data)
