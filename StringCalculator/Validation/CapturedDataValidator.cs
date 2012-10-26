@@ -6,17 +6,13 @@ namespace StringCalculator.Validation
 {
 	class CapturedDataValidator : ICapturedDataValidator
 	{
-		private readonly string _rawData;
-		private readonly CapturedData _capturedData;
+		private string _rawData;
+		private CapturedData _capturedData;
 
-		public CapturedDataValidator(string rawData, CapturedData capturedData)
+		public void Validate(string rawData, CapturedData capturedData)
 		{
 			_rawData = rawData;
 			_capturedData = capturedData;
-		}
-
-		public void Validate()
-		{
 			var undefinedDelims = GetUndefinedDelimiters().ToArray();
 			if (undefinedDelims.Any())
 				throw new UnparseableDataException(_rawData).UndefinedDelimiters(undefinedDelims);

@@ -4,6 +4,6 @@ namespace StringCalculator.Validation
 {
 	public interface INumberValidator
 	{
-		void Validate(IEnumerable<int> numbers);
+		void Validate(string rawData, IEnumerable<int> numbers);
 	}
 }

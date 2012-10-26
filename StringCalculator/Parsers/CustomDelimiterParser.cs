@@ -3,27 +3,21 @@ using StringCalculator.Validation;
 
 namespace StringCalculator.Parsers
 {
-	class CustomDelimiterParser : Parser
+	class CustomDelimiterParser : DelimiterParser
 	{
 		private readonly ICapturedDataValidator _capturedDataValidator;
 
-		public CustomDelimiterParser(string rawData, CapturedData capturedData, ICapturedDataValidator capturedDataValidator)
-			: base(rawData, capturedData)
+		public CustomDelimiterParser(ICapturedDataValidator capturedDataValidator)
 		{
 			_capturedDataValidator = capturedDataValidator;
 		}
 
-		public CustomDelimiterParser(string rawData, CapturedData capturedData)
-			: this(
-				rawData,
-				capturedData,
-				new CapturedDataValidator(rawData, capturedData)
-			) { }
+		public CustomDelimiterParser() : this(new CapturedDataValidator()) { }
 
-		public override void Parse()
+		public override void Parse(string rawData, CapturedData capturedData)
 		{
-			_capturedDataValidator.Validate();
-			Numbers = ParseIntegers(CapturedData.Numbers);
+			_capturedDataValidator.Validate(rawData, capturedData);
+			Numbers = ParseIntegers(capturedData.Numbers);
 		}
 	}
 }

@@ -4,25 +4,14 @@ using StringCalculator.DataContainers;
 
 namespace StringCalculator.Parsers
 {
-	public abstract class Parser
+	public abstract class DelimiterParser
 	{
-		protected readonly string Data;
-		protected readonly CapturedData CapturedData;
+		protected string Data;
+		protected CapturedData CapturedData;
 		public const char UniversalDelimiter = '\n';
 		public IEnumerable<int> Numbers { get; protected set; }
 
-		protected Parser(string data)
-		{
-			Data = data;
-		}
-
-		protected Parser(string data, CapturedData capturedData)
-			: this(data)
-		{
-			CapturedData = capturedData;
-		}
-
-		public abstract void Parse();
+		public abstract void Parse(string data, CapturedData capturedData);
 
 		public static IEnumerable<int> ParseIntegers(IEnumerable<string> values)
 		{

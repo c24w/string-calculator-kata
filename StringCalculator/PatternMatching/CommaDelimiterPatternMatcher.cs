@@ -5,7 +5,7 @@ namespace StringCalculator.PatternMatching
 	public class CommaDelimiterPatternMatcher : PatternMatcher
 	{
 		private static readonly string DelimPattern = string.Format(
-			"({0}|{1})", ',', Parser.UniversalDelimiter
+			"({0}|{1})", ',', DelimiterParser.UniversalDelimiter
 		);
 
 		private static readonly string Pattern = string.Format(

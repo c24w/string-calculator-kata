@@ -1,45 +1,73 @@
+using System.Collections.Generic;
 using StringCalculator.PatternMatching;
 using StringCalculator.Validation;
 
 namespace StringCalculator.Parsers
 {
-	public class CalculatorDataParser : Parser
+	public class CalculatorDataParser
 	{
 		private readonly INumberValidator _numberValidator;
+		public IEnumerable<int> Numbers;
 
-		public CalculatorDataParser(string data) : this(data, new DefaultNumberValidator(data)) { }
+		public CalculatorDataParser() : this(new DefaultNumberValidator()) { }
 
-		public CalculatorDataParser(string data, INumberValidator numberValidator)
-			: base(data)
+		public CalculatorDataParser(INumberValidator numberValidator)
 		{
 			_numberValidator = numberValidator;
 		}
 
-		public override void Parse()
+		public void Parse(string data)
 		{
-			if (Data.Equals(string.Empty))
+			if (data.Equals(string.Empty))
 			{
 				Numbers = new[] { 0 };
 				return;
 			}
 
-			var parser = SelectParser();
-			parser.Parse();
+			var parser = DetermineParserAndParse(data);
 			Numbers = parser.Numbers;
-			_numberValidator.Validate(Numbers);
+			_numberValidator.Validate(data, Numbers);
 		}
 
-		private Parser SelectParser()
+		private DelimiterParser DetermineParserAndParse(string data)
 		{
-			var commaDelimSyntaxMatcher = new CommaDelimiterPatternMatcher(Data);
-			if (commaDelimSyntaxMatcher.Success)
-				return new CommaDelimiterParser(Data, commaDelimSyntaxMatcher.GetCapturedData());
+			/*
+			var patternParserPairs = new Dictionary<PatternMatcher, Parser>
+			{
+				{new CommaDelimiterPatternMatcher(Data), new CommaDelimiterParser(Data)},
+				{new CustomDelimiterPatternMatcher(Data), new CustomDelimiterParser(Data)}
+			};
 
-			var customDelimSyntaxMatcher = new CustomDelimiterPatternMatcher(Data);
-			if (customDelimSyntaxMatcher.Success)
-				return new CustomDelimiterParser(Data, customDelimSyntaxMatcher.GetCapturedData());
-
+			foreach (var patternParserPair in patternParserPairs)
+			{
+				var patternMatcher = patternParserPair.Key;
+				if (patternMatcher.Success)
+				{
+					var parser = patternParserPair.Value;
+					parser.SetCapturedData(patternMatcher.GetCapturedData());
+					return parser;
+				}
+			}
 			throw new UnparseableDataException(Data).InvalidSyntax();
+			 */
+
+			var commaDelimSyntaxMatcher = new CommaDelimiterPatternMatcher(data);
+			if (commaDelimSyntaxMatcher.Success)
+			{
+				var parser = new CommaDelimiterParser();
+				parser.Parse(data, commaDelimSyntaxMatcher.GetCapturedData());
+				return parser;
+			}
+
+			var customDelimSyntaxMatcher = new CustomDelimiterPatternMatcher(data);
+			if (customDelimSyntaxMatcher.Success)
+			{
+				var parser = new CustomDelimiterParser();
+				parser.Parse(data, customDelimSyntaxMatcher.GetCapturedData());
+				return parser;
+			}
+
+			throw new UnparseableDataException(data).InvalidSyntax();
 		}
 	}
 }

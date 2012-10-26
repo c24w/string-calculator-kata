@@ -11,7 +11,7 @@ namespace StringCalculator.PatternMatching
 			CaptureGroups.DelimitersDefinition,
 			CaptureGroups.Numbers,
 			CaptureGroups.DelimitersUsed,
-			Parser.UniversalDelimiter
+			DelimiterParser.UniversalDelimiter
 		);
 
 		public CustomDelimiterPatternMatcher(string data) : base(data, Pattern) { }

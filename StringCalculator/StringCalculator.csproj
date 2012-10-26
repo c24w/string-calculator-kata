@@ -45,7 +45,7 @@
     <Compile Include="Parsers\CommaDelimiterParser.cs" />
     <Compile Include="Parsers\CustomDelimiterParser.cs" />
     <Compile Include="Parsers\CalculatorDataParser.cs" />
-    <Compile Include="Parsers\Parser.cs" />
+    <Compile Include="Parsers\DelimiterParser.cs" />
     <Compile Include="PatternMatching\CaptureGroups.cs" />
     <Compile Include="PatternMatching\CommaDelimiterPatternMatcher.cs" />
     <Compile Include="PatternMatching\CustomDelimiterPatternMatcher.cs" />

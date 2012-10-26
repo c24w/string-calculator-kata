@@ -2,14 +2,11 @@ using StringCalculator.DataContainers;
 
 namespace StringCalculator.Parsers
 {
-	class CommaDelimiterParser : Parser
+	class CommaDelimiterParser : DelimiterParser
 	{
-
-		public CommaDelimiterParser(string rawData, CapturedData capturedData) : base(rawData, capturedData) { }
-
-		public override void Parse()
+		public override void Parse(string rawData, CapturedData capturedData)
 		{
-			Numbers = ParseIntegers(CapturedData.Numbers);
+			Numbers = ParseIntegers(capturedData.Numbers);
 		}
 	}
 }

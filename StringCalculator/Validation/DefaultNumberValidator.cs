@@ -5,18 +5,11 @@ namespace StringCalculator.Validation
 {
 	class DefaultNumberValidator : INumberValidator
 	{
-		private readonly string _data;
-
-		public DefaultNumberValidator(string data)
-		{
-			_data = data;
-		}
-
-		public void Validate(IEnumerable<int> numbers)
+		public void Validate(string rawData, IEnumerable<int> numbers)
 		{
 			var negatives = GetNegativeValues(numbers).ToArray();
 			if (negatives.Any())
-				throw new UnparseableDataException(_data).ContainsNegatives(negatives);
+				throw new UnparseableDataException(rawData).ContainsNegatives(negatives);
 		}
 
 		private static IEnumerable<int> GetNegativeValues(IEnumerable<int> numbers)

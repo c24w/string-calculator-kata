@@ -14,8 +14,8 @@ namespace StringCalculator
 
 		public int Sum()
 		{
-			var parser = new CalculatorDataParser(_data);
-			parser.Parse();
+			var parser = new CalculatorDataParser();
+			parser.Parse(_data);
 			return parser.Numbers.Sum();
 		}
 	}
