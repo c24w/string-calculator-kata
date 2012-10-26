@@ -1,4 +1,5 @@
 using System.Linq;
+using StringCalculator.Parsers;
 
 namespace StringCalculator
 {
@@ -13,7 +14,7 @@ namespace StringCalculator
 
 		public int Sum()
 		{
-			var parser = new BaseParser(_data);
+			var parser = new TopParser(_data);
 			parser.Parse();
 			return parser.Numbers.Sum();
 		}

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StringCalculator.PatternMatching;
 
-namespace StringCalculator
+namespace StringCalculator.Parsers
 {
 	class CustomDelimiterParser : Parser
 	{

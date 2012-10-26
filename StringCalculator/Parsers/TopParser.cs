@@ -1,11 +1,18 @@
-using System.Collections.Generic;
-using System.Linq;
+using StringCalculator.PatternMatching;
 
-namespace StringCalculator
+namespace StringCalculator.Parsers
 {
-	public class BaseParser : Parser
+	public class TopParser : Parser
 	{
-		public BaseParser(string data) : base(data) { }
+		private readonly INumberValidator _numberValidator;
+
+		public TopParser(string data) : this(data, new DefaultNumberValidator()) { }
+
+		public TopParser(string data, INumberValidator numberValidator)
+			: base(data)
+		{
+			_numberValidator = numberValidator;
+		}
 
 		public override void Parse()
 		{
@@ -18,7 +25,7 @@ namespace StringCalculator
 			var parser = SelectParser();
 			parser.Parse();
 			Numbers = parser.Numbers;
-			new NumberValidator(Data, Numbers).Validate();
+			_numberValidator.Validate(Data, Numbers);
 		}
 
 		private Parser SelectParser()

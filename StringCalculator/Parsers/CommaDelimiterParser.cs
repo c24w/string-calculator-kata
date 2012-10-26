@@ -1,4 +1,6 @@
-namespace StringCalculator
+using StringCalculator.PatternMatching;
+
+namespace StringCalculator.Parsers
 {
 	class CommaDelimiterParser : Parser
 	{

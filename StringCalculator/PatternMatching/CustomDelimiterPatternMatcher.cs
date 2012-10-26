@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using StringCalculator.Parsers;
 
-namespace StringCalculator
+namespace StringCalculator.PatternMatching
 {
 	class CustomDelimiterPatternMatcher : IPatternMatcher
 	{
@@ -19,7 +20,7 @@ namespace StringCalculator
 			CaptureGroups.DelimitersDefinition,
 			CaptureGroups.DelimitedNumbers,
 			CaptureGroups.DelimitersUsed,
-			BaseParser.ConstDelimiter
+			TopParser.ConstDelimiter
 		);
 
 		private readonly Regex _regex = new Regex(Pattern, RegexOptions.Compiled);

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace StringCalculator
+namespace StringCalculator.PatternMatching
 {
 	public class CommaDelimiterPatternMatcher : IPatternMatcher
 	{
 		private const string NumbersCaptureGroup = "nums";
 
 		private static readonly string DelimPattern = string.Format(
-			"({0}|{1})", ',', BaseParser.ConstDelimiter
+			"({0}|{1})", ',', Parser.ConstDelimiter
 		);
 
 		private static readonly string Pattern = string.Format(

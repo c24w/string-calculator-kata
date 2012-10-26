@@ -1,4 +1,4 @@
-namespace StringCalculator
+namespace StringCalculator.PatternMatching
 {
 	public interface IPatternMatcher
 	{
