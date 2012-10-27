@@ -18,5 +18,10 @@ namespace StringCalculator.PatternMatching
 		{
 			ApplyPatternToData(data, Pattern);
 		}
+
+	    public override DelimiterParser GetAssociatedParser()
+	    {
+	        return new CommaDelimiterParser();
+	    }
 	}
 }

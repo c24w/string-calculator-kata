@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using StringCalculator.DataContainers;
+using StringCalculator.Parsers;
 
 namespace StringCalculator.PatternMatching
 {
@@ -24,5 +25,7 @@ namespace StringCalculator.PatternMatching
 		{
 			return new CapturedData(Match.Groups);
 		}
+
+	    public abstract DelimiterParser GetAssociatedParser();
 	}
 }

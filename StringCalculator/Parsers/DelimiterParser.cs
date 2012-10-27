@@ -9,7 +9,7 @@ namespace StringCalculator.Parsers
 		protected string Data;
 		protected CapturedData CapturedData;
 		public const char UniversalDelimiter = '\n';
-		public IEnumerable<int> Numbers { get; protected set; }
+        public IEnumerable<int> Numbers { get; protected set; }
 
 		public abstract void Parse(string data, CapturedData capturedData);
 
