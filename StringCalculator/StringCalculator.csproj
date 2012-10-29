@@ -39,9 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContainers\CapturedData.cs" />
-    <Compile Include="DataContainers\CommaDelimiterCapturedData.cs" />
-    <Compile Include="DataContainers\CustomDelimiterCapturedData.cs" />
+    <Compile Include="DataCapture\CapturedData.cs" />
+    <Compile Include="DataCapture\CommaDelimiterCapturedData.cs" />
+    <Compile Include="DataCapture\CustomDelimiterCapturedData.cs" />
     <Compile Include="Parsers\CommaDelimiterParser.cs" />
     <Compile Include="Parsers\CustomDelimiterParser.cs" />
     <Compile Include="Parsers\CalculatorDataParser.cs" />
